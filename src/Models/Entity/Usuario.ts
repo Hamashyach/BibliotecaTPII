@@ -10,9 +10,6 @@ export class Usuario {
         if (!nome || !email || !senha) {
             throw new Error("Todas as informações devem ser preenchidas.");
         }
-        if (nome.trim().length < 3) {
-            throw new Error("Nome deve ter pelo menos 3 caracteres.");
-        }
         if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             throw new Error("Email inválido.");
         }

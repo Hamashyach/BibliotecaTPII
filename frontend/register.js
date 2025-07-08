@@ -18,7 +18,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
     try {
         // Envia a requisição para o backend usando a API Fetch
         // A rota de cadastro é POST /api/usuarios
-        const response = await fetch('http://localhost:3040/api/usuarios', { // URL completa para a rota de cadastro
+        const response = await fetch('http://localhost:3040/api/', { // URL completa para a rota de cadastro
             method: 'POST',
             headers: {
                 // Informa ao backend que estamos enviando dados em formato JSON
