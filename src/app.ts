@@ -4,6 +4,7 @@ import { RegisterRoutes } from './route/routes';
 import { setupSwagger } from './config/Swagger';
 import cors from 'cors';
 
+
 const app = express();
 const PORT = 3040;
 

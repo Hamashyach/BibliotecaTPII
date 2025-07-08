@@ -1,20 +1,166 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel de Administração</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Administrador - Biblioteca</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        /* Estilos básicos para o dashboard */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 2rem auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .dashboard-menu-item {
+            background-color: #007bff;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .dashboard-menu-item:hover {
+            background-color: #0056b3;
+        }
+        .stats-section {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+        .stat-card {
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        .stat-card h3 {
+            margin-bottom: 0.5rem;
+            color: #007bff;
+        }
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Bem-vindo!</h2>
-        <p>Login realizado com sucesso.</p>
+    <header class="header">
+        <h1>Dashboard do Administrador</h1>
+    </header>
+
+    <div class="container">
+        <h2>Bem-vindo, Administrador!</h2>
+        <p>Use o menu abaixo para gerenciar a biblioteca.</p>
+
+        <nav class="dashboard-menu">
+            <a href="cadastro_livros.html" class="dashboard-menu-item">
+                Cadastrar Livros
+            </a>
+            <a href="cadastro_usuarios.html" class="dashboard-menu-item">
+                Cadastrar Usuários
+            </a>
+            <a href="emprestimos.html" class="dashboard-menu-item">
+                Gerenciar Empréstimos
+            </a>
+            <a href="devolucoes.html" class="dashboard-menu-item">
+                Processar Devoluções
+            </a>
+            </nav>
+
+        <section class="stats-section">
+            <h3>Visão Geral</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total de Usuários</h3>
+                    <p id="totalUsuarios">Carregando...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total de Livros</h3>
+                    <p id="totalLivros">Carregando...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Livros Emprestados</h3>
+                    <p id="livrosEmprestados">Carregando...</p>
+                </div>
+                </div>
+        </section>
     </div>
+
     <script>
-        // Simples verificação de segurança: se não houver token, volta para a tela de login
-        if (!localStorage.getItem('authToken')) {
-            window.location.href = 'index.html';
-        }
+        // JavaScript para carregar as estatísticas
+        document.addEventListener('DOMContentLoaded', async () => {
+            const totalUsuariosElement = document.getElementById('totalUsuarios');
+            const totalLivrosElement = document.getElementById('totalLivros');
+            const livrosEmprestadosElement = document.getElementById('livrosEmprestados');
+
+            try {
+                // Requisição para obter o total de usuários
+                const usuariosResponse = await fetch('http://localhost:3040/api/usuarios');
+                if (usuariosResponse.ok) {
+                    const usuarios = await usuariosResponse.json();
+                    totalUsuariosElement.textContent = usuarios.length;
+                } else {
+                    totalUsuariosElement.textContent = 'Erro';
+                }
+
+                // Requisição para obter o total de livros
+                const livrosResponse = await fetch('http://localhost:3040/api/livros');
+                if (livrosResponse.ok) {
+                    const livros = await livrosResponse.json();
+                    totalLivrosElement.textContent = livros.length;
+                } else {
+                    totalLivrosElement.textContent = 'Erro';
+                }
+
+                // Requisição para obter o total de empréstimos (livros emprestados)
+                // Você pode precisar de uma lógica mais avançada para contar apenas os não devolvidos
+                const emprestimosResponse = await fetch('http://localhost:3040/api/emprestimos');
+                if (emprestimosResponse.ok) {
+                    const emprestimos = await emprestimosResponse.json();
+                    // Assumindo que dataDevolucao === null significa que o livro está emprestado
+                    const livrosAtualmenteEmprestados = emprestimos.filter(e => e.dataDevolucao === null);
+                    livrosEmprestadosElement.textContent = livrosAtualmenteEmprestados.length;
+                } else {
+                    livrosEmprestadosElement.textContent = 'Erro';
+                }
+
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                totalUsuariosElement.textContent = 'Erro';
+                totalLivrosElement.textContent = 'Erro';
+                livrosEmprestadosElement.textContent = 'Erro';
+            }
+        });
     </script>
 </body>
 </html>

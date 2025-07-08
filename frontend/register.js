@@ -14,18 +14,19 @@ document.getElementById('register-form').addEventListener('submit', async functi
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
+    const perfil = 'admin';
 
     try {
         // Envia a requisição para o backend usando a API Fetch
         // A rota de cadastro é POST /api/usuarios
-        const response = await fetch('http://localhost:3040/api/', { // URL completa para a rota de cadastro
+        const response = await fetch('http://localhost:3040/api/usuarios', { // URL completa para a rota de cadastro
             method: 'POST',
             headers: {
                 // Informa ao backend que estamos enviando dados em formato JSON
                 'Content-Type': 'application/json',
             },
             // Converte o objeto JavaScript em uma string JSON para envio
-            body: JSON.stringify({ nome, email, senha }),
+            body: JSON.stringify({ nome, email, senha, perfil }),
         });
 
         // Converte a resposta do backend (que também é JSON) em um objeto JavaScript
