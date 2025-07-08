@@ -19,7 +19,7 @@ export class EmprestimoController extends Controller {
     private emprestimoService = new EmprestimoService(new RepositoryFactory());
     private commandManager = new CommandManager();
 
-    @Post()
+@Post()
 @SuccessResponse("201", "Created")
 public async cadastrarEmprestimo(
     @Body() dto: EmprestimoRequestDto,
