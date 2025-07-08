@@ -1,10 +1,8 @@
-// src/Repositorios/LivroRepositorio.ts
+import { executarComandoSQL } from '../../Database/mysql'; 
+import { Livro } from '../../Models/Entity/Livro'; 
+import { ILivroRepository } from '../interfaces/ILivroRepository';
 
-import { executarComandoSQL } from '../Database/mysql'; // Ajuste o caminho se necessário
-import { Livro } from '../Models/Entity/Livro'; // Ajuste o caminho se necessário
-
-
-export class LivroRepository {
+export class LivroRepository implements ILivroRepository {
 
     constructor() {
         this.criarTabela();
@@ -97,16 +95,11 @@ export class LivroRepository {
         }
     }
 
-    async filtrarLivrosPorTitulo(titulo: string): Promise<Livro[]> {
-        // Usamos LIKE com '%' para permitir buscas parciais (ex: "Senhor" encontra "O Senhor dos Anéis")
-        const query = "SELECT * FROM livros WHERE titulo LIKE ?";
-        try {
-            const resultado = await executarComandoSQL(query, [`%${titulo}%`]);
-            return resultado.map(this.linhaParaLivro);
-        } catch (err: any) {
-            console.error(`Erro ao filtrar livros por título:`, err);
-            throw err;
-        }
+    async filtrarLivroPorTituloEAutor(titulo: string, autor: string): Promise<Livro | null> {
+        const query = "SELECT * FROM livros WHERE titulo = ? AND autor = ?";
+        const resultado = await executarComandoSQL(query, [titulo, autor]);
+        if (resultado.length === 0) return null;
+        return this.linhaParaLivro(resultado[0]);
     }
 
     async filtrarTodosLivros(): Promise<Livro[]> {

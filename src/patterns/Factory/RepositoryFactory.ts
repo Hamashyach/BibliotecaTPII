@@ -1,16 +1,19 @@
-import { UsuarioRepository } from '../../Repository/UsuarioRepository';
-// Importe outros repositórios aqui conforme necessário
-// import { LivroRepositorio } from '../../Repositorios/LivroRepositorio';
+import { UsuarioRepository } from '../../Repository/implementacoes/UsuarioRepository';
+import { LivroRepository } from '../../Repository/implementacoes/LivroRepository';
+import { EmprestimoRepository } from '../../Repository/implementacoes/EmprestimoRepository';
 
 export class RepositoryFactory {
     public criarUsuarioRepositorio(): UsuarioRepository {
-        // A lógica de criação pode incluir a passagem de uma conexão de banco, etc.
         return new UsuarioRepository();
     }
 
-    /*
-    public criarLivroRepositorio(): LivroRepositorio {
-        return new LivroRepositorio();
+    
+    public criarLivroRepositorio(): LivroRepository {
+        return new LivroRepository();
     }
-    */
+
+    public criarEmprestimoRepositorio(): EmprestimoRepository {
+        return new EmprestimoRepository();
+    }
+    
 }

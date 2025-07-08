@@ -15,10 +15,6 @@ class Usuario {
         if (senha.length < 6) {
             throw new Error("Senha deve ter pelo menos 6 caracteres.");
         }
-        const regexSenhaNumerica = /^\d{6}$/;
-        if (!regexSenhaNumerica.test(senha)) {
-            throw new Error("A senha deve conter exatamente 6 dígitos numéricos.");
-        }
         this.nome = nome;
         this.email = email;
         this.senha = senha;

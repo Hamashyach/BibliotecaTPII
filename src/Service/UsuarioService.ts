@@ -1,9 +1,9 @@
 
 import { Usuario } from '../Models/Entity/Usuario';
 import { UsuarioDto } from '../Models/dto/UsuarioDto';
-import { UsuarioRepository } from '../Repository/UsuarioRepository';
+import { UsuarioRepository } from '../Repository/implementacoes/UsuarioRepository';
 import { RepositoryFactory } from '../patterns/Factory/RepositoryFactory';
-import { Observer } from '../patterns/Factory/Observer/Observer'; 
+import { Observer } from '../patterns/Observer/Observer'; 
 import * as bcrypt from 'bcrypt';
 import { LoginRequestDto } from '../Models/dto/LoginRequestdto';
 

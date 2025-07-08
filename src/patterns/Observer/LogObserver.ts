@@ -1,6 +1,6 @@
 
 import { Observer } from './Observer';
-import { Usuario } from '../../../Models/Entity/Usuario';
+import { Usuario } from '../../Models/Entity/Usuario';
 
 export class LogObserver implements Observer {
     update(data: any): void {

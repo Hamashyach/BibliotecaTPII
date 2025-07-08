@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmprestimoRepository = void 0;
-const mysql_1 = require("../Database/mysql"); // Ajuste o caminho se necessário
-const Emprestimo_1 = require("../Models/Entity/Emprestimo"); // Ajuste o caminho se necessário
+const mysql_1 = require("../../Database/mysql"); // Ajuste o caminho se necessário
+const Emprestimo_1 = require("../../Models/Entity/Emprestimo"); // Ajuste o caminho se necessário
 class EmprestimoRepository {
     constructor() {
         this.criarTabela();

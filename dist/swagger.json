@@ -115,6 +115,120 @@
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
+			},
+			"LivroDto": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"titulo": {
+						"type": "string"
+					},
+					"autor": {
+						"type": "string"
+					},
+					"categoria": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"titulo",
+					"autor",
+					"categoria"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LivroRequestDto": {
+				"properties": {
+					"titulo": {
+						"type": "string"
+					},
+					"autor": {
+						"type": "string"
+					},
+					"categoria": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"titulo",
+					"autor",
+					"categoria"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmprestimoDto": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"livroId": {
+						"type": "number",
+						"format": "double"
+					},
+					"usuarioId": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataEmprestimo": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"dataDevolucao": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"livroId",
+					"usuarioId",
+					"dataEmprestimo",
+					"dataDevolucao"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmprestimoRequestDto": {
+				"properties": {
+					"livroId": {
+						"type": "number",
+						"format": "double"
+					},
+					"usuarioId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"livroId",
+					"usuarioId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DevolucaoDto": {
+				"properties": {
+					"emprestimo": {
+						"$ref": "#/components/schemas/EmprestimoDto"
+					},
+					"valorMulta": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"emprestimo",
+					"valorMulta"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -432,6 +546,425 @@
 						}
 					}
 				}
+			}
+		},
+		"/livros": {
+			"post": {
+				"operationId": "CadastrarLivro",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LivroDto"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LivroRequestDto"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListarTodosLivros",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/LivroDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/livros/{id}": {
+			"get": {
+				"operationId": "FiltrarLivroPorId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LivroDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/emprestimos": {
+			"post": {
+				"operationId": "CadastrarEmprestimo",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EmprestimoDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmprestimoRequestDto"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListarTodosEmprestimos",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/EmprestimoDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Lista todos os empréstimos registrados no sistema.",
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/emprestimos/{id}/devolver": {
+			"put": {
+				"operationId": "DevolverEmprestimo",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DevolucaoDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Registra a devolução de um livro a partir do ID do empréstimo.",
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/emprestimos/desfazer": {
+			"post": {
+				"operationId": "DesfazerUltimaAcao",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/emprestimos/{id}": {
+			"get": {
+				"operationId": "FiltrarEmprestimoPorId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EmprestimoDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Busca um empréstimo específico pelo seu ID.",
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/emprestimos/buscar-por-usuario": {
+			"get": {
+				"operationId": "ListarEmprestimosPorNomeUsuario",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/EmprestimoDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Busca empréstimos pelo nome do usuário.",
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "O nome (ou parte do nome) do usuário para buscar.",
+						"in": "query",
+						"name": "nome",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

@@ -1,10 +1,10 @@
 // src/Repositorios/EmprestimoRepositorio.ts
 
-import { executarComandoSQL } from '../Database/mysql'; // Ajuste o caminho se necessário
-import { Emprestimo } from '../Models/Entity/Emprestimo'; // Ajuste o caminho se necessário
+import { executarComandoSQL } from '../../Database/mysql'; // Ajuste o caminho se necessário
+import { Emprestimo } from '../../Models/Entity/Emprestimo'; // Ajuste o caminho se necessário
+import { iEmprestimoRepository } from '../interfaces/iEmprestimoRepository'; // Ajuste o caminho se necessário
 
-
-export class EmprestimoRepository{
+export class EmprestimoRepository implements iEmprestimoRepository {
 
     constructor() {
         this.criarTabela();
@@ -35,13 +35,12 @@ export class EmprestimoRepository{
     
     
     private linhaParaEmprestimo(linha: any): Emprestimo {
-        const emprestimo = new Emprestimo(
-            linha.livroId,
-            linha.usuarioId,
-            new Date(linha.dataEmprestimo),
-            new Date(linha.dataDevolucao) 
-        );
-        emprestimo.id = linha.id;
+        const emprestimo = new Emprestimo(linha.livroId, linha.usuarioId);
+
+            emprestimo.id = linha.id;
+            emprestimo.dataEmprestimo = new Date(linha.dataEmprestimo);
+            emprestimo.dataDevolucao = linha.dataDevolucao ? new Date(linha.dataDevolucao) : null;
+
         return emprestimo;
     }
 

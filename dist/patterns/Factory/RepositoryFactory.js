@@ -1,13 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RepositoryFactory = void 0;
-const UsuarioRepository_1 = require("../../Repository/UsuarioRepository");
-// Importe outros repositórios aqui conforme necessário
-// import { LivroRepositorio } from '../../Repositorios/LivroRepositorio';
+const UsuarioRepository_1 = require("../../Repository/implementacoes/UsuarioRepository");
+const LivroRepository_1 = require("../../Repository/implementacoes/LivroRepository");
+const EmprestimoRepository_1 = require("../../Repository/implementacoes/EmprestimoRepository");
 class RepositoryFactory {
     criarUsuarioRepositorio() {
-        // A lógica de criação pode incluir a passagem de uma conexão de banco, etc.
         return new UsuarioRepository_1.UsuarioRepository();
+    }
+    criarLivroRepositorio() {
+        return new LivroRepository_1.LivroRepository();
+    }
+    criarEmprestimoRepositorio() {
+        return new EmprestimoRepository_1.EmprestimoRepository();
     }
 }
 exports.RepositoryFactory = RepositoryFactory;

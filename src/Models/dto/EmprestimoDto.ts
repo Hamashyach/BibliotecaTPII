@@ -3,14 +3,14 @@ export class EmprestimoDto {
     livroId: number;
     usuarioId: number;
     dataEmprestimo: Date;
-    dataDevolucao: Date;
+    dataDevolucao: Date | null; 
 
     constructor(
         id: number,
         livroId: number,
         usuarioId: number,
         dataEmprestimo: Date,
-        dataDevolucao: Date
+        dataDevolucao: Date | null 
     ) {
         this.id = id;
         this.livroId = livroId;

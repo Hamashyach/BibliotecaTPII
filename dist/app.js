@@ -16,9 +16,6 @@ app.use(express_1.default.static(frontEndPath));
 const apiRouter = express_1.default.Router();
 (0, routes_1.RegisterRoutes)(apiRouter);
 app.use('/api', apiRouter);
-//app.get('/', (req: Request, res: Response) => {
-///res.sendFile(path.join(frontEndPath, 'login.html'));
-//});
 (0, Swagger_1.setupSwagger)(app);
 app.listen(PORT, () => {
     console.log(`Servidor pronto e rodando na porta: ${PORT}`);

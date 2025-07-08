@@ -1,11 +1,12 @@
 // src/Repositories/UsuarioRepository.ts
 
-import { executarComandoSQL } from '../Database/mysql'; // Ajuste o caminho se necessário
-import { Usuario } from '../Models/Entity/Usuario'; // Ajuste o caminho se necessário
+import { executarComandoSQL } from '../../Database/mysql'; 
+import { Usuario } from '../../Models/Entity/Usuario'; 
+import { IUsuarioRepository } from '../interfaces/IUsuarioRepository';
 
 
 // A classe agora implementa a interface que definimos
-export class UsuarioRepository {
+export class UsuarioRepository implements IUsuarioRepository {
 
     // O construtor chama o método para criar a tabela
     constructor() {
