@@ -92,6 +92,7 @@ const models = {
             "usuarioId": { "dataType": "double", "required": true },
             "dataEmprestimo": { "dataType": "datetime", "required": true },
             "dataDevolucao": { "dataType": "union", "subSchemas": [{ "dataType": "datetime" }, { "dataType": "enum", "enums": [null] }], "required": true },
+            "dataDevolucaoPrevista": { "dataType": "datetime", "required": true },
         },
         "additionalProperties": false,
     },
@@ -489,6 +490,29 @@ function RegisterRoutes(app) {
                 const controller = new EmprestimoController_1.EmprestimoController();
                 yield templateService.apiHandler({
                     methodName: 'listarEmprestimosPorNomeUsuario',
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsEmprestimoController_listarEmprestimosAtrasados = {};
+    app.get('/emprestimos/atrasados', ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController)), ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController.prototype.listarEmprestimosAtrasados)), function EmprestimoController_listarEmprestimosAtrasados(request, response, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+            let validatedArgs = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsEmprestimoController_listarEmprestimosAtrasados, request, response });
+                const controller = new EmprestimoController_1.EmprestimoController();
+                yield templateService.apiHandler({
+                    methodName: 'listarEmprestimosAtrasados',
                     controller,
                     response,
                     next,

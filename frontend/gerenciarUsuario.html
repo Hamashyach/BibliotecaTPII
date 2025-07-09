@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerenciamento de Usuários - Biblioteca</title> <style>
+    /* Reset básico para todos os elementos */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* O body será o contêiner flex para a sidebar fixa e a área principal */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      height: 100vh; /* Ocupa a altura total da viewport */
+      display: flex; /* Habilita flexbox para dispor sidebar e main-area lado a lado */
+    }
+
+    /* Sidebar lateral fixa à esquerda */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem 0;
+      height: 100vh; /* Ocupa a altura total da viewport */
+      position: fixed; /* Fixa a sidebar na tela */
+      top: 0;
+      left: 0;
+      overflow-y: auto; /* Adiciona scroll se o conteúdo da sidebar for muito grande */
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000; /* Garante que a sidebar fique acima de outros conteúdos */
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      padding: 1rem 0;
+      margin: 0;
+      color: #ecf0f1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li a {
+      display: block;
+      padding: 0.8rem 1.5rem;
+      color: #ecf0f1;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+      background-color: #34495e;
+      border-left: 5px solid #007bff;
+    }
+
+    /* Área principal ao lado da sidebar */
+    .main-area {
+      margin-left: 250px; /* Cria o espaço para a sidebar fixa */
+      display: flex; /* Contêiner flexível para o header e main-content */
+      flex-direction: column; /* Coloca header e main-content um abaixo do outro */
+      width: calc(100% - 250px); /* Ocupa o restante da largura */
+      height: 100vh; /* Ocupa a altura total da viewport */
+      overflow-y: auto; /* Adiciona scroll se o conteúdo da área principal for muito grande */
+    }
+
+    /* Header dentro da área principal */
+    header {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      flex-shrink: 0; /* Impede que o header encolha */
+    }
+
+    /* Conteúdo principal dentro da área principal */
+    .main-content {
+      flex: 1; /* Faz o conteúdo principal ocupar o espaço restante na coluna */
+      padding: 2rem;
+      overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
+    }
+
+    .main-content h2 {
+      color: #007bff;
+      margin-top: 0;
+    }
+    
+    /* Estilos específicos desta tela (copiados do gerenciar_usuarios.html anterior) */
+    .controls-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap; 
+        gap: 1rem; 
+    }
+    .controls-section input[type="text"] {
+        padding: 0.7rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        flex-grow: 1; 
+        min-width: 150px; 
+    }
+    .controls-section button, .controls-section a.button { 
+        padding: 0.7rem 1.2rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+        text-decoration: none; 
+        display: inline-block; 
+        text-align: center;
+    }
+    .controls-section .btn-cadastro {
+        background-color: #28a745; 
+        color: white;
+    }
+    .controls-section .btn-cadastro:hover {
+        background-color: #218838;
+    }
+    .controls-section .btn-search {
+        background-color: #007bff; 
+        color: white;
+    }
+    .controls-section .btn-search:hover {
+        background-color: #0056b3;
+    }
+
+    .user-list-section, .loan-details-section {
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+    .user-list-section h3, .loan-details-section h3 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .user-table th, .user-table td {
+        border: 1px solid #ddd;
+        padding: 0.7rem;
+        text-align: left;
+    }
+    .user-table th {
+        background-color: #f2f2f2;
+    }
+    .user-table tbody tr:hover {
+        background-color: #e9ecef;
+        cursor: pointer;
+    }
+    .no-results, .no-loans-message {
+        text-align: center;
+        color: #6c757d;
+        padding: 1rem;
+    }
+    .loan-details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    .loan-details-table th, .loan-details-table td {
+        border: 1px solid #ddd;
+        padding: 0.7rem;
+        text-align: left;
+    }
+    .loan-details-table th {
+        background-color: #f2f2f2;
+    }
+    .loan-details-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <h2>Navegação</h2>
+    <ul>
+      <li><a href="admin.html">Visão Geral</a></li>
+      <li><a href="gerenciarUsuario.html" class="active">Usuários</a></li>
+      <li><a href="gerenciarEmprestimo.html">Empréstimos</a></li>
+      <li><a href="gerenciarLivros.html">Livros</a></li>
+      <li><a href="devolucoes.html">Devoluções</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-area">
+    <header>
+      <h1>Gerenciamento de Biblioteca</h1>
+    </header>
+
+    <main class="main-content">
+      <div class="content-wrapper">
+        <h2>Gerenciar Usuários</h2>
+        
+        <div class="controls-section">
+            <a href="cadastroUsuario.html" class="btn-cadastro button">Cadastrar Novo Usuário</a>
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome ou email...">
+            <button id="searchButton" class="btn-search">Pesquisar</button>
+            <button id="clearSearchButton" class="btn-search">Limpar Pesquisa</button>
+        </div>
+
+        <section class="user-list-section">
+            <h3>Lista de Usuários</h3>
+            <div id="userListContainer">
+                <p class="no-results" id="loadingUsersMessage">Carregando usuários...</p>
+            </div>
+        </section>
+
+        <section class="loan-details-section" id="loan-details-section" style="display: none;">
+            <h3>Empréstimos de <span id="selectedUserName"></span></h3>
+            <div id="userLoansContainer">
+                <p class="no-loans-message">Nenhum empréstimo para este usuário.</p>
+            </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/gerenciarUsuario.js"></script>
+</body>
+</html>

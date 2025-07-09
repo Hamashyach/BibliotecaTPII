@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Usuários - Biblioteca</title> <style>
+  <title>Registrar Empréstimo - Biblioteca</title>
+  <style>
     /* Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
     }
 
-    /* O body será o contêiner flex para a sidebar fixa e a área principal */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -106,7 +106,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Estilos específicos do formulário de cadastro (reaproveitados do cadastro_usuarios.html original) */
+    /* Estilos específicos do formulário de cadastro */
     .form-group {
         margin-bottom: 1rem;
     }
@@ -115,6 +115,7 @@
         margin-bottom: 0.5rem;
         font-weight: bold;
     }
+    .form-group select,
     .form-group input[type="text"],
     .form-group input[type="email"],
     .form-group input[type="password"] {
@@ -172,9 +173,9 @@
     <h2>Navegação</h2>
     <ul>
       <li><a href="admin.html">Visão Geral</a></li>
-      <li><a href="gerenciarUsuario.html" class="active">Usuários</a></li> 
-      <li><a href="GerenciarEmprestimo.html">Empréstimos</a></li>
-      <li><a href="gerenciarEmprestimo.html">Livros</a></li>
+      <li><a href="gerenciarUsuario.html">Usuários</a></li>
+      <li><a href="gerenciarEmprestimo.html" class="active">Empréstimos</a></li> 
+      <li><a href="gerenciarLivros.html">Livros</a></li>
       <li><a href="devolucoes.html">Devoluções</a></li>
     </ul>
   </aside>
@@ -186,29 +187,29 @@
 
     <main class="main-content">
       <div class="content-wrapper">
-        <h2>Cadastrar Novo Usuário Normal</h2>
-        <form id="cadastro-usuario-form">
+        <h2>Registrar Novo Empréstimo</h2>
+        <form id="cadastro-emprestimo-form">
             <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+                <label for="usuarioSelect">Usuário:</label>
+                <select id="usuarioSelect" name="usuarioId" required>
+                    <option value="">Carregando usuários...</option>
+                </select>
             </div>
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="livroSelect">Livro (Disponíveis):</label>
+                <select id="livroSelect" name="livroId" required>
+                    <option value="">Carregando livros...</option>
+                </select>
             </div>
             <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Cadastrar Usuário</button>
+                <button type="submit">Registrar Empréstimo</button>
             </div>
             <div id="message" class="message"></div>
         </form>
-        <a href="gerenciarUsuario.html" class="back-link">Voltar para Gerenciamento de Usuários</a>
+        <a href="gerenciarEmprestimos.html" class="back-link">Voltar para Gerenciamento de Empréstimos</a>
       </div>
     </main>
   </div>
 
-  <script src="js/cadastroUsuario.js"></script> </body>
+  <script src="js/cadastroEmprestimo.js"></script> </body>
 </html>

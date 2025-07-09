@@ -117,6 +117,15 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
             return this.emprestimoService.buscarPorNomeUsuario(nome);
         });
     }
+    listarEmprestimosAtrasados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const emprestimos = yield this.emprestimoService.buscarEmprestimosAtrasados();
+            // Mapeie para DTOs se necessário, similar ao UsuarioService/Controller
+            // Se EmprestimoDto não existe, pode retornar o próprio Emprestimo[] ou criar o DTO.
+            // Exemplo: return emprestimos.map(e => new EmprestimoDto(e.id, e.livroId, ...));
+            return emprestimos.map(e => this.emprestimoService['emprestimoParaDto'](e));
+        });
+    }
 };
 exports.EmprestimoController = EmprestimoController;
 __decorate([
@@ -169,6 +178,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], EmprestimoController.prototype, "listarEmprestimosPorNomeUsuario", null);
+__decorate([
+    (0, tsoa_1.Get)("/atrasados") // Nova rota: GET /emprestimos/atrasados
+    ,
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], EmprestimoController.prototype, "listarEmprestimosAtrasados", null);
 exports.EmprestimoController = EmprestimoController = __decorate([
     (0, tsoa_1.Route)("emprestimos"),
     (0, tsoa_1.Tags)("Emprestimo")

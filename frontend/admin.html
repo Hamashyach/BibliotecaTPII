@@ -1,166 +1,221 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard do Administrador - Biblioteca</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* Estilos básicos para o dashboard */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: 2rem auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .dashboard-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        .dashboard-menu-item {
-            background-color: #007bff;
-            color: white;
-            padding: 1.5rem;
-            border-radius: 5px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .dashboard-menu-item:hover {
-            background-color: #0056b3;
-        }
-        .stats-section {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            text-align: center;
-        }
-        .stat-card {
-            background-color: #e9ecef;
-            padding: 1rem;
-            border-radius: 5px;
-        }
-        .stat-card h3 {
-            margin-bottom: 0.5rem;
-            color: #007bff;
-        }
-        .stat-card p {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard do Administrador - Biblioteca</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar lateral fixa à esquerda */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem 0;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      padding: 1rem 0;
+      margin: 0;
+      color: #ecf0f1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li a {
+      display: block;
+      padding: 0.8rem 1.5rem;
+      color: #ecf0f1;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+      background-color: #34495e;
+      border-left: 5px solid #007bff;
+    }
+
+    /* Área principal ao lado da sidebar */
+    .main-area {
+      margin-left: 250px; /* espaço para a sidebar */
+      display: flex;
+      flex-direction: column;
+      width: calc(100% - 250px);
+      height: 100vh;
+    }
+
+    /* Header dentro da área principal */
+    header {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Conteúdo principal */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .main-content h2 {
+      color: #007bff;
+      margin-top: 0;
+    }
+
+    .overdue-loans-section {
+      margin-top: 2rem;
+    }
+
+    .overdue-loans-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .overdue-loans-table th,
+    .overdue-loans-table td {
+      border: 1px solid #ddd;
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    .overdue-loans-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .overdue-loans-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .no-overdue {
+      text-align: center;
+      padding: 1rem;
+      color: #6c757d;
+    }
+  </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Dashboard do Administrador</h1>
+
+  <aside class="sidebar">
+    <h2>Navegação</h2>
+    <ul>
+      <li><a href="admin.html" class="active">Visão Geral</a></li>
+      <li><a href="gerenciarUsuario.html">Usuários</a></li>
+      <li><a href="emprestimos.html">Empréstimos</a></li>
+      <li><a href="cadastro_livros.html">Livros</a></li>
+      <li><a href="devolucoes.html">Devoluções</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-area">
+    <header>
+      <h1>Gerenciamento de Biblioteca</h1>
     </header>
 
-    <div class="container">
-        <h2>Bem-vindo, Administrador!</h2>
-        <p>Use o menu abaixo para gerenciar a biblioteca.</p>
+    <main class="main-content">
+      <h2>Bem-vindo, Administrador!</h2>
+      <p>Aqui você pode gerenciar as operações da biblioteca.</p>
 
-        <nav class="dashboard-menu">
-            <a href="cadastro_livros.html" class="dashboard-menu-item">
-                Cadastrar Livros
-            </a>
-            <a href="cadastroUsuario.html" class="dashboard-menu-item">
-                Cadastrar Usuários
-            </a>
-            <a href="emprestimos.html" class="dashboard-menu-item">
-                Gerenciar Empréstimos
-            </a>
-            <a href="devolucoes.html" class="dashboard-menu-item">
-                Processar Devoluções
-            </a>
-            </nav>
+      <section class="overdue-loans-section">
+        <h3>Empréstimos Atrasados</h3>
+        <div id="overdueLoansContainer">
+          <p class="no-overdue" id="loadingMessage">Carregando empréstimos...</p>
+        </div>
+      </section>
+    </main>
+  </div>
 
-        <section class="stats-section">
-            <h3>Visão Geral</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Total de Usuários</h3>
-                    <p id="totalUsuarios">Carregando...</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Total de Livros</h3>
-                    <p id="totalLivros">Carregando...</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Livros Emprestados</h3>
-                    <p id="livrosEmprestados">Carregando...</p>
-                </div>
-                </div>
-        </section>
-    </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const overdueLoansContainer = document.getElementById('overdueLoansContainer');
+      const loadingMessage = document.getElementById('loadingMessage');
 
-    <script>
-        // JavaScript para carregar as estatísticas
-        document.addEventListener('DOMContentLoaded', async () => {
-            const totalUsuariosElement = document.getElementById('totalUsuarios');
-            const totalLivrosElement = document.getElementById('totalLivros');
-            const livrosEmprestadosElement = document.getElementById('livrosEmprestados');
+      try {
+        const usersResponse = await fetch('http://localhost:3040/api/usuarios');
+        const users = await usersResponse.json();
+        const userMap = new Map(users.map(user => [user.id, user]));
 
-            try {
-                // Requisição para obter o total de usuários
-                const usuariosResponse = await fetch('http://localhost:3040/api/usuarios');
-                if (usuariosResponse.ok) {
-                    const usuarios = await usuariosResponse.json();
-                    totalUsuariosElement.textContent = usuarios.length;
-                } else {
-                    totalUsuariosElement.textContent = 'Erro';
-                }
+        const booksResponse = await fetch('http://localhost:3040/api/livros');
+        const books = await booksResponse.json();
+        const bookMap = new Map(books.map(book => [book.id, book]));
 
-                // Requisição para obter o total de livros
-                const livrosResponse = await fetch('http://localhost:3040/api/livros');
-                if (livrosResponse.ok) {
-                    const livros = await livrosResponse.json();
-                    totalLivrosElement.textContent = livros.length;
-                } else {
-                    totalLivrosElement.textContent = 'Erro';
-                }
+        const loansResponse = await fetch('http://localhost:3040/api/emprestimos/atrasados');
+        const overdueLoans = await loansResponse.json();
 
-                // Requisição para obter o total de empréstimos (livros emprestados)
-                // Você pode precisar de uma lógica mais avançada para contar apenas os não devolvidos
-                const emprestimosResponse = await fetch('http://localhost:3040/api/emprestimos');
-                if (emprestimosResponse.ok) {
-                    const emprestimos = await emprestimosResponse.json();
-                    // Assumindo que dataDevolucao === null significa que o livro está emprestado
-                    const livrosAtualmenteEmprestados = emprestimos.filter(e => e.dataDevolucao === null);
-                    livrosEmprestadosElement.textContent = livrosAtualmenteEmprestados.length;
-                } else {
-                    livrosEmprestadosElement.textContent = 'Erro';
-                }
+        loadingMessage.style.display = 'none';
 
-            } catch (error) {
-                console.error('Erro ao carregar estatísticas:', error);
-                totalUsuariosElement.textContent = 'Erro';
-                totalLivrosElement.textContent = 'Erro';
-                livrosEmprestadosElement.textContent = 'Erro';
-            }
-        });
-    </script>
+        if (overdueLoans.length > 0) {
+          const table = document.createElement('table');
+          table.classList.add('overdue-loans-table');
+          table.innerHTML = `
+            <thead>
+              <tr>
+                <th>Usuário</th>
+                <th>Livro Emprestado</th>
+                <th>Data Empréstimo</th>
+                <th>Data Prevista Devolução</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          `;
+          const tbody = table.querySelector('tbody');
+
+          overdueLoans.forEach(loan => {
+            const user = userMap.get(loan.usuarioId);
+            const book = bookMap.get(loan.livroId);
+
+            const userName = user ? user.nome : 'Usuário Desconhecido';
+            const bookTitle = book ? book.titulo : 'Livro Desconhecido';
+            const dataEmprestimo = new Date(loan.dataEmprestimo).toLocaleDateString('pt-BR');
+            const dataPrevistaDevolucao = new Date(loan.dataDevolucaoPrevista).toLocaleDateString('pt-BR');
+
+            const row = tbody.insertRow();
+            row.innerHTML = `
+              <td>${userName}</td>
+              <td>${bookTitle}</td>
+              <td>${dataEmprestimo}</td>
+              <td>${dataPrevistaDevolucao}</td>
+            `;
+          });
+
+          overdueLoansContainer.appendChild(table);
+        } else {
+          overdueLoansContainer.innerHTML = '<p class="no-overdue">Não há empréstimos atrasados no momento. 🎉</p>';
+        }
+      } catch (error) {
+        console.error('Erro ao carregar detalhes dos empréstimos atrasados:', error);
+        overdueLoansContainer.innerHTML = '<p class="no-overdue error">Erro ao carregar os dados. Tente novamente mais tarde.</p>';
+      }
+    });
+  </script>
 </body>
 </html>

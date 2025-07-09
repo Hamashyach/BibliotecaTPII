@@ -89,6 +89,7 @@ const models: TsoaRoute.Models = {
             "usuarioId": {"dataType":"double","required":true},
             "dataEmprestimo": {"dataType":"datetime","required":true},
             "dataDevolucao": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "dataDevolucaoPrevista": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -575,6 +576,35 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'listarEmprestimosPorNomeUsuario',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsEmprestimoController_listarEmprestimosAtrasados: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/emprestimos/atrasados',
+            ...(fetchMiddlewares<RequestHandler>(EmprestimoController)),
+            ...(fetchMiddlewares<RequestHandler>(EmprestimoController.prototype.listarEmprestimosAtrasados)),
+
+            async function EmprestimoController_listarEmprestimosAtrasados(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsEmprestimoController_listarEmprestimosAtrasados, request, response });
+
+                const controller = new EmprestimoController();
+
+              await templateService.apiHandler({
+                methodName: 'listarEmprestimosAtrasados',
                 controller,
                 response,
                 next,

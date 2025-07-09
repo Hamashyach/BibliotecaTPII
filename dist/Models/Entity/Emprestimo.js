@@ -11,6 +11,7 @@ class Emprestimo {
         this.usuarioId = usuarioId;
         this.dataEmprestimo = new Date();
         this.dataDevolucao = null;
+        this.dataDevolucaoPrevista = new Date();
     }
 }
 exports.Emprestimo = Emprestimo;

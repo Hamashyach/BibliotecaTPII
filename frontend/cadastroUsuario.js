@@ -1,3 +1,5 @@
+// frontend/js/cadastro_usuarios.js
+
 document.getElementById('cadastro-usuario-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 

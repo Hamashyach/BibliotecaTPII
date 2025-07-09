@@ -183,6 +183,10 @@
 						"type": "string",
 						"format": "date-time",
 						"nullable": true
+					},
+					"dataDevolucaoPrevista": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
@@ -190,7 +194,8 @@
 					"livroId",
 					"usuarioId",
 					"dataEmprestimo",
-					"dataDevolucao"
+					"dataDevolucao",
+					"dataDevolucaoPrevista"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -965,6 +970,31 @@
 						}
 					}
 				]
+			}
+		},
+		"/emprestimos/atrasados": {
+			"get": {
+				"operationId": "ListarEmprestimosAtrasados",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/EmprestimoDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": []
 			}
 		}
 	},

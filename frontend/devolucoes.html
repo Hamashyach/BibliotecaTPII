@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Usuários - Biblioteca</title> <style>
+  <title>Processar Devolução - Biblioteca</title> <style>
     /* Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
@@ -106,7 +106,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Estilos específicos do formulário de cadastro (reaproveitados do cadastro_usuarios.html original) */
+    /* Estilos específicos do formulário */
     .form-group {
         margin-bottom: 1rem;
     }
@@ -115,9 +115,7 @@
         margin-bottom: 0.5rem;
         font-weight: bold;
     }
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"] {
+    .form-group input[type="number"] { /* Input para ID de empréstimo */
         width: 100%;
         padding: 0.8rem;
         border: 1px solid #ddd;
@@ -125,7 +123,7 @@
         box-sizing: border-box;
     }
     .form-group button {
-        background-color: #28a745; /* Verde para ação de sucesso */
+        background-color: #007bff; /* Azul para ação principal */
         color: white;
         padding: 1rem 1.5rem;
         border: none;
@@ -135,7 +133,7 @@
         transition: background-color 0.3s ease;
     }
     .form-group button:hover {
-        background-color: #218838;
+        background-color: #0056b3;
     }
     .message {
         margin-top: 1rem;
@@ -153,6 +151,19 @@
         background-color: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
+    }
+    .return-details {
+        background-color: #e9ecef;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1.5rem;
+        border: 1px solid #ced4da;
+    }
+    .return-details p {
+        margin: 0.5rem 0;
+    }
+    .return-details strong {
+        color: #333;
     }
     .back-link {
         display: block;
@@ -172,11 +183,10 @@
     <h2>Navegação</h2>
     <ul>
       <li><a href="admin.html">Visão Geral</a></li>
-      <li><a href="gerenciarUsuario.html" class="active">Usuários</a></li> 
-      <li><a href="GerenciarEmprestimo.html">Empréstimos</a></li>
-      <li><a href="gerenciarEmprestimo.html">Livros</a></li>
-      <li><a href="devolucoes.html">Devoluções</a></li>
-    </ul>
+      <li><a href="gerenciarUsuario.html">Usuários</a></li>
+      <li><a href="gerenciarEmprestimo.html">Empréstimos</a></li>
+      <li><a href="gerenciarLivros.html">Livros</a></li>
+      <li><a href="devolucoes.html" class="active">Devoluções</a></li> </ul>
   </aside>
 
   <div class="main-area">
@@ -186,29 +196,28 @@
 
     <main class="main-content">
       <div class="content-wrapper">
-        <h2>Cadastrar Novo Usuário Normal</h2>
-        <form id="cadastro-usuario-form">
+        <h2>Processar Devolução</h2>
+        <form id="devolucao-form">
             <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+                <label for="emprestimoId">ID do Empréstimo:</label>
+                <input type="number" id="emprestimoId" name="emprestimoId" required placeholder="Ex: 123">
             </div>
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Cadastrar Usuário</button>
+                <button type="submit">Registrar Devolução</button>
             </div>
             <div id="message" class="message"></div>
+            <div id="returnDetails" class="return-details" style="display: none;">
+                <h3>Detalhes da Devolução:</h3>
+                <p><strong>Empréstimo ID:</strong> <span id="returnedLoanId"></span></p>
+                <p><strong>Livro:</strong> <span id="returnedBookTitle"></span></p>
+                <p><strong>Usuário:</strong> <span id="returnedUserName"></span></p>
+                <p><strong>Valor da Multa:</strong> R$ <span id="returnedFineAmount"></span></p>
+            </div>
         </form>
-        <a href="gerenciarUsuario.html" class="back-link">Voltar para Gerenciamento de Usuários</a>
+        <a href="gerenciarEmprestimos.html" class="back-link">Voltar para Gerenciamento de Empréstimos</a>
       </div>
     </main>
   </div>
 
-  <script src="js/cadastroUsuario.js"></script> </body>
+  <script src="js/devolucoes.js"></script> </body>
 </html>

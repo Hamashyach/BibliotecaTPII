@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Usuários - Biblioteca</title> <style>
+  <title>Gerenciamento de Livros - Biblioteca</title>
+  <style>
     /* Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
@@ -89,80 +90,91 @@
       overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
       background-color: #f9f9f9;
       
-      /* Estilos para centralizar o wrapper interno do formulário */
+      /* Estilos para centralizar o wrapper interno */
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
 
-    /* Wrapper interno para centralizar o conteúdo do formulário */
+    /* Wrapper interno para centralizar o conteúdo */
     .content-wrapper {
-        max-width: 600px; /* Largura máxima para o formulário */
+        max-width: 1000px; /* Largura máxima para a tabela de livros */
         width: 100%;
         box-sizing: border-box;
         background-color: #fff;
-        padding: 2rem;
+        padding: 1.5rem;
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
     }
 
-    /* Estilos específicos do formulário de cadastro (reaproveitados do cadastro_usuarios.html original) */
-    .form-group {
-        margin-bottom: 1rem;
+    /* Estilos específicos desta tela (similar ao gerenciarUsuario.html) */
+    .controls-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap; 
+        gap: 1rem; 
     }
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"] {
-        width: 100%;
-        padding: 0.8rem;
+    .controls-section input[type="text"] {
+        padding: 0.7rem;
         border: 1px solid #ddd;
         border-radius: 4px;
-        box-sizing: border-box;
+        flex-grow: 1; 
+        min-width: 150px; 
     }
-    .form-group button {
-        background-color: #28a745; /* Verde para ação de sucesso */
-        color: white;
-        padding: 1rem 1.5rem;
+    .controls-section button, .controls-section a.button { 
+        padding: 0.7rem 1.2rem;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.9rem;
         transition: background-color 0.3s ease;
+        text-decoration: none; 
+        display: inline-block; 
+        text-align: center;
     }
-    .form-group button:hover {
+    .controls-section .btn-cadastro {
+        background-color: #28a745; 
+        color: white;
+    }
+    .controls-section .btn-cadastro:hover {
         background-color: #218838;
     }
-    .message {
-        margin-top: 1rem;
-        padding: 0.8rem;
-        border-radius: 4px;
+    .controls-section .btn-search {
+        background-color: #007bff; 
+        color: white;
+    }
+    .controls-section .btn-search:hover {
+        background-color: #0056b3;
+    }
+
+    .books-list-section h3 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .books-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .books-table th, .books-table td {
+        border: 1px solid #ddd;
+        padding: 0.7rem;
+        text-align: left;
+    }
+    .books-table th {
+        background-color: #f2f2f2;
+    }
+    .books-table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+    .no-results-message {
         text-align: center;
-        display: none; /* Inicialmente oculto */
-    }
-    .message.success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    .message.error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .back-link {
-        display: block;
-        margin-top: 1.5rem;
-        text-align: center;
-        color: #007bff;
-        text-decoration: none;
-    }
-    .back-link:hover {
-        text-decoration: underline;
+        color: #6c757d;
+        padding: 1rem;
     }
   </style>
 </head>
@@ -172,9 +184,9 @@
     <h2>Navegação</h2>
     <ul>
       <li><a href="admin.html">Visão Geral</a></li>
-      <li><a href="gerenciarUsuario.html" class="active">Usuários</a></li> 
-      <li><a href="GerenciarEmprestimo.html">Empréstimos</a></li>
-      <li><a href="gerenciarEmprestimo.html">Livros</a></li>
+      <li><a href="gerenciarUsuario.html">Usuários</a></li>
+      <li><a href="gerenciarEmprestimo.html">Empréstimos</a></li>
+      <li><a href="gerenciarLivros.html" class="active">Livros</a></li> 
       <li><a href="devolucoes.html">Devoluções</a></li>
     </ul>
   </aside>
@@ -186,29 +198,23 @@
 
     <main class="main-content">
       <div class="content-wrapper">
-        <h2>Cadastrar Novo Usuário Normal</h2>
-        <form id="cadastro-usuario-form">
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Cadastrar Usuário</button>
-            </div>
-            <div id="message" class="message"></div>
-        </form>
-        <a href="gerenciarUsuario.html" class="back-link">Voltar para Gerenciamento de Usuários</a>
+        <h2>Gerenciar Livros</h2>
+        
+        <div class="controls-section">
+            <a href="cadastroLivro.html" class="btn-cadastro button">Cadastrar Novo Livro</a> <input type="text" id="searchInput" placeholder="Pesquisar por título, autor ou categoria...">
+            <button id="searchButton" class="btn-search">Pesquisar</button>
+            <button id="clearSearchButton" class="btn-search">Limpar Pesquisa</button>
+        </div>
+
+        <section class="books-list-section">
+            <h3>Lista de Livros</h3>
+            <div id="booksListContainer">
+                <p class="no-results-message" id="loadingBooksMessage">Carregando livros...</p>
+                </div>
+        </section>
       </div>
     </main>
   </div>
 
-  <script src="js/cadastroUsuario.js"></script> </body>
+  <script src="js/gerenciarLivros.js"></script> </body>
 </html>

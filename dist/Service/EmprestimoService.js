@@ -34,7 +34,8 @@ class EmprestimoService {
             livroId: emprestimo.livroId,
             usuarioId: emprestimo.usuarioId,
             dataEmprestimo: emprestimo.dataEmprestimo,
-            dataDevolucao: emprestimo.dataDevolucao // Já é Date | null no modelo
+            dataDevolucao: emprestimo.dataDevolucao,
+            dataDevolucaoPrevista: emprestimo.dataDevolucaoPrevista
         };
     }
     /**
@@ -63,6 +64,9 @@ class EmprestimoService {
             if (totalEmprestimosUsuario >= this.LIMITE_EMPRESTIMOS_POR_USUARIO) {
                 throw new Error(`Usuário atingiu o limite de ${this.LIMITE_EMPRESTIMOS_POR_USUARIO} empréstimos ativos.`);
             }
+            const dataEmprestimo = new Date();
+            const dataDevolucaoPrevista = new Date(dataEmprestimo);
+            dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + 7);
             const novoEmprestimo = new Emprestimo_1.Emprestimo(livroId, usuarioId);
             const emprestimoSalvo = yield this.emprestimoRepositorio.inserirEmprestimo(novoEmprestimo);
             this.notificarObservers('emprestimo:criado', emprestimoSalvo);
@@ -133,6 +137,30 @@ class EmprestimoService {
             }
             yield this.emprestimoRepositorio.deletarEmprestimo(id);
             this.notificarObservers('emprestimo:deletado', { id });
+        });
+    }
+    // Método para buscar empréstimos atrasados
+    buscarEmprestimosAtrasados() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Você precisaria de um método no seu EmprestimoRepository
+            // que busca todos os empréstimos ou filtros por dataDevolucao nula.
+            // Por exemplo, assumindo que EmprestimoRepository tem filtrarTodosEmprestimos()
+            const todosEmprestimos = yield this.emprestimoRepositorio.filtrarTodosEmprestimos(); // Você precisaria de um EmprestimoRepository similar ao UsuarioRepository
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+            // Filtra os empréstimos que estão atrasados
+            const emprestimosAtrasados = todosEmprestimos.filter(emprestimo => {
+                // Verifica se o empréstimo ainda não foi devolvido
+                if (emprestimo.dataDevolucao === null) {
+                    // Converte a data prevista de devolução para objeto Date e zera a hora
+                    const dataPrevista = new Date(emprestimo.dataDevolucaoPrevista);
+                    dataPrevista.setHours(0, 0, 0, 0);
+                    // Se a data prevista de devolução for anterior a hoje, está atrasado
+                    return dataPrevista < hoje;
+                }
+                return false; // Não está atrasado se já foi devolvido
+            });
+            return emprestimosAtrasados;
         });
     }
 }

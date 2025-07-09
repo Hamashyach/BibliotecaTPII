@@ -9,7 +9,7 @@ import { CommandManager } from "../patterns/Command/CommandManager";
 import { ICalculoMultaStrategy } from "../patterns/Strategy/ICalculoMultaStrategy";
 import { MultaAtrasoSimplesStrategy } from "../patterns/Strategy/implementacoes/MultaAtrasoSimplesStrategy";
 import { DevolucaoDto } from "../Models/dto/DevolucaoDto";
-import { SemMultaStrategy } from "../patterns/Strategy/implementacoes/SemMultaStrategy";
+
 
 
 @Route("emprestimos")
@@ -119,5 +119,14 @@ public async cadastrarEmprestimo(
         @Query() nome: string
     ): Promise<EmprestimoDto[]> {
         return this.emprestimoService.buscarPorNomeUsuario(nome);
+    }
+
+    @Get("/atrasados") // Nova rota: GET /emprestimos/atrasados
+    public async listarEmprestimosAtrasados(): Promise<EmprestimoDto[]> {
+        const emprestimos = await this.emprestimoService.buscarEmprestimosAtrasados();
+        // Mapeie para DTOs se necessário, similar ao UsuarioService/Controller
+        // Se EmprestimoDto não existe, pode retornar o próprio Emprestimo[] ou criar o DTO.
+        // Exemplo: return emprestimos.map(e => new EmprestimoDto(e.id, e.livroId, ...));
+        return emprestimos.map(e => this.emprestimoService['emprestimoParaDto'](e));
     }
 }
