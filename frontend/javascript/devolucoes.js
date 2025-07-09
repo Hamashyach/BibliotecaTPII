@@ -1,8 +1,10 @@
 // frontend/js/devolucoes.js
+// CÓDIGO ATUALIZADO
 
 document.addEventListener('DOMContentLoaded', async () => {
     const devolucaoForm = document.getElementById('devolucao-form');
     const emprestimoIdInput = document.getElementById('emprestimoId');
+    const multaStrategySelect = document.getElementById('multaStrategy'); // NOVO: Seleção da estratégia
     const messageElement = document.getElementById('message');
     const returnDetailsDiv = document.getElementById('returnDetails');
     const returnedLoanId = document.getElementById('returnedLoanId');
@@ -10,8 +12,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const returnedUserName = document.getElementById('returnedUserName');
     const returnedFineAmount = document.getElementById('returnedFineAmount');
 
-    let allUsers = []; // Para buscar nomes de usuários
-    let allBooks = []; // Para buscar títulos de livros
+    let allUsers = []; 
+    let allBooks = []; 
 
     const fetchSupportingData = async () => {
         try {
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showMessage('', ''); // Limpa mensagens anteriores
 
         const emprestimoId = parseInt(emprestimoIdInput.value);
+        const strategyType = multaStrategySelect.value; // NOVO: Pega a estratégia selecionada
 
         if (isNaN(emprestimoId)) {
             showMessage('Por favor, insira um ID de empréstimo válido.', 'error');
@@ -68,7 +71,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // Não precisa de body para este PUT, apenas o ID na URL
+                // NOVO: Inclui a estratégia no corpo da requisição
+                body: JSON.stringify({ strategyType: strategyType }), 
             });
 
             const data = await response.json(); // A resposta inclui DevolucaoDto

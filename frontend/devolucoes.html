@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Processar Devolução - Biblioteca</title> <style>
+  <title>Processar Devolução - Biblioteca</title>
+  <style>
     /* Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
@@ -115,7 +116,8 @@
         margin-bottom: 0.5rem;
         font-weight: bold;
     }
-    .form-group input[type="number"] { /* Input para ID de empréstimo */
+    .form-group input[type="number"],
+    .form-group select { /* Adicionado estilo para select */
         width: 100%;
         padding: 0.8rem;
         border: 1px solid #ddd;
@@ -186,7 +188,8 @@
       <li><a href="gerenciarUsuario.html">Usuários</a></li>
       <li><a href="gerenciarEmprestimo.html">Empréstimos</a></li>
       <li><a href="gerenciarLivros.html">Livros</a></li>
-      <li><a href="devolucoes.html" class="active">Devoluções</a></li> </ul>
+      <li><a href="devolucoes.html" class="active">Devoluções</a></li>
+    </ul>
   </aside>
 
   <div class="main-area">
@@ -203,6 +206,13 @@
                 <input type="number" id="emprestimoId" name="emprestimoId" required placeholder="Ex: 123">
             </div>
             <div class="form-group">
+                <label for="multaStrategy">Estratégia de Multa:</label>
+                <select id="multaStrategy" name="multaStrategy" required>
+                    <option value="simples">Multa por Atraso Simples</option>
+                    <option value="sem_multa">Sem Multa (Usuário VIP)</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <button type="submit">Registrar Devolução</button>
             </div>
             <div id="message" class="message"></div>
@@ -214,10 +224,10 @@
                 <p><strong>Valor da Multa:</strong> R$ <span id="returnedFineAmount"></span></p>
             </div>
         </form>
-        <a href="gerenciarEmprestimos.html" class="back-link">Voltar para Gerenciamento de Empréstimos</a>
+        <a href="gerenciarEmprestimo.html" class="back-link">Voltar para Gerenciamento de Empréstimos</a>
       </div>
     </main>
   </div>
 
-  <script src="js/devolucoes.js"></script> </body>
+  <script src="../javascript/devolucoes.js"></script> </body>
 </html>

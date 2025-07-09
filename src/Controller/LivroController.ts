@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Put, Route, Tags, SuccessResponse, Res, TsoaResponse } from "tsoa";
+import { Body, Query, Controller, Get, Path, Post, Put, Route, Tags, SuccessResponse, Res, TsoaResponse } from "tsoa";
 import { LivroService } from '../Service/LivroService';
 import { LivroDto } from '../Models/dto/LivroDto';
 import { LivroRequestDto } from '../Models/dto/LivroRequestDto';
@@ -31,6 +31,8 @@ export class LivroController extends Controller {
 
     @Get()
     public async listarTodosLivros(): Promise<LivroDto[]> {
+        // Agora, este endpoint pode ser substituído por /livros/buscar sem termo
+        // Ou você pode mantê-lo e chamar this.livroService.buscarTodos();
         return this.livroService.buscarTodos();
     }
 
@@ -44,5 +46,18 @@ export class LivroController extends Controller {
             return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
         }
         return livro;
+    }
+
+    // NOVO ENDPOINT: Busca livros com filtro
+    /**
+     * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
+     * Inclui informação de disponibilidade.
+     * @param termo Termo de busca para título, autor, categoria ou ID do livro.
+     */
+    @Get("/buscar") // Rota: GET /livros/buscar?termo=exemplo
+    public async buscarLivrosComFiltro(
+        @Query() termo?: string
+    ): Promise<LivroDto[]> {
+        return this.livroService.buscarLivrosComFiltro(termo);
     }
 }

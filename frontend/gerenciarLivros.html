@@ -5,109 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerenciamento de Livros - Biblioteca</title>
   <style>
-    /* Reset básico para todos os elementos */
-    * {
-      box-sizing: border-box;
-    }
+    /* ... (Mantenha o mesmo CSS de layout que você tem) ... */
+    /* Apenas adicione ou ajuste estes estilos na sua tag <style> */
 
-    /* O body será o contêiner flex para a sidebar fixa e a área principal */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      display: flex; /* Habilita flexbox para dispor sidebar e main-area lado a lado */
-    }
+    /* Estilos base (copie do seu admin.html ou arquivo de estilo comum) */
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; height: 100vh; display: flex; }
+    .sidebar { width: 250px; background-color: #2c3e50; color: white; padding: 1rem 0; height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); z-index: 1000; }
+    .sidebar h2 { text-align: center; padding: 1rem 0; margin: 0; color: #ecf0f1; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    .sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar ul li a { display: block; padding: 0.8rem 1.5rem; color: #ecf0f1; text-decoration: none; transition: background-color 0.3s ease; }
+    .sidebar ul li a:hover, .sidebar ul li a.active { background-color: #34495e; border-left: 5px solid #007bff; }
+    
+    .main-area { margin-left: 250px; display: flex; flex-direction: column; width: calc(100% - 250px); height: 100vh; overflow-y: auto; }
+    header { background-color: #333; color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); flex-shrink: 0; }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; background-color: #f9f9f9; display: flex; justify-content: center; align-items: flex-start; }
+    .content-wrapper { max-width: 1000px; width: 100%; box-sizing: border-box; background-color: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.05); }
 
-    /* Sidebar lateral fixa à esquerda */
-    .sidebar {
-      width: 250px;
-      background-color: #2c3e50;
-      color: white;
-      padding: 1rem 0;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      position: fixed; /* Fixa a sidebar na tela */
-      top: 0;
-      left: 0;
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da sidebar for muito grande */
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      z-index: 1000; /* Garante que a sidebar fique acima de outros conteúdos */
-    }
-
-    .sidebar h2 {
-      text-align: center;
-      padding: 1rem 0;
-      margin: 0;
-      color: #ecf0f1;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar ul li a {
-      display: block;
-      padding: 0.8rem 1.5rem;
-      color: #ecf0f1;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-      background-color: #34495e;
-      border-left: 5px solid #007bff;
-    }
-
-    /* Área principal ao lado da sidebar */
-    .main-area {
-      margin-left: 250px; /* Cria o espaço para a sidebar fixa */
-      display: flex; /* Contêiner flexível para o header e main-content */
-      flex-direction: column; /* Coloca header e main-content um abaixo do outro */
-      width: calc(100% - 250px); /* Ocupa o restante da largura */
-      height: 100vh; /* Ocupa a altura total da viewport */
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da área principal for muito grande */
-    }
-
-    /* Header dentro da área principal */
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      flex-shrink: 0; /* Impede que o header encolha */
-    }
-
-    /* Conteúdo principal dentro da área principal */
-    .main-content {
-      flex: 1; /* Faz o conteúdo principal ocupar o espaço restante na coluna */
-      padding: 2rem;
-      overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
-      background-color: #f9f9f9;
-      
-      /* Estilos para centralizar o wrapper interno */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    /* Wrapper interno para centralizar o conteúdo */
-    .content-wrapper {
-        max-width: 1000px; /* Largura máxima para a tabela de livros */
-        width: 100%;
-        box-sizing: border-box;
-        background-color: #fff;
-        padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.05);
-    }
-
-    /* Estilos específicos desta tela (similar ao gerenciarUsuario.html) */
+    /* Estilos específicos desta tela */
     .controls-section {
         display: flex;
         justify-content: space-between;
@@ -186,7 +101,7 @@
       <li><a href="admin.html">Visão Geral</a></li>
       <li><a href="gerenciarUsuario.html">Usuários</a></li>
       <li><a href="gerenciarEmprestimo.html">Empréstimos</a></li>
-      <li><a href="gerenciarLivros.html" class="active">Livros</a></li> 
+      <li><a href="gerenciarLivros.html" class="active">Livros</a></li>
       <li><a href="devolucoes.html">Devoluções</a></li>
     </ul>
   </aside>
@@ -201,7 +116,8 @@
         <h2>Gerenciar Livros</h2>
         
         <div class="controls-section">
-            <a href="cadastroLivro.html" class="btn-cadastro button">Cadastrar Novo Livro</a> <input type="text" id="searchInput" placeholder="Pesquisar por título, autor ou categoria...">
+            <a href="cadastroLivro.html" class="btn-cadastro button">Cadastrar Novo Livro</a>
+            <input type="text" id="searchInput" placeholder="Pesquisar por título, autor, categoria ou ID...">
             <button id="searchButton" class="btn-search">Pesquisar</button>
             <button id="clearSearchButton" class="btn-search">Limpar Pesquisa</button>
         </div>
@@ -216,5 +132,5 @@
     </main>
   </div>
 
-  <script src="js/gerenciarLivros.js"></script> </body>
+  <script src="../javascript/gerenciarLivros.js"></script> </body>
 </html>

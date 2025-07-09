@@ -130,6 +130,9 @@
 					},
 					"categoria": {
 						"type": "string"
+					},
+					"isAvailable": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -676,6 +679,42 @@
 				]
 			}
 		},
+		"/livros/buscar": {
+			"get": {
+				"operationId": "BuscarLivrosComFiltro",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/LivroDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Lista livros, com opção de filtro por termo (título, autor, categoria, ID).\r\nInclui informação de disponibilidade.",
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Termo de busca para título, autor, categoria ou ID do livro.",
+						"in": "query",
+						"name": "termo",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/emprestimos": {
 			"post": {
 				"operationId": "CadastrarEmprestimo",
@@ -826,6 +865,7 @@
 				"security": [],
 				"parameters": [
 					{
+						"description": "O ID do empréstimo a ser devolvido.",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -834,7 +874,24 @@
 							"type": "number"
 						}
 					}
-				]
+				],
+				"requestBody": {
+					"description": "O corpo da requisição contendo o tipo de estratégia de multa.",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"strategyType": {
+										"type": "string"
+									}
+								},
+								"type": "object",
+								"description": "O corpo da requisição contendo o tipo de estratégia de multa."
+							}
+						}
+					}
+				}
 			}
 		},
 		"/emprestimos/desfazer": {
@@ -860,6 +917,49 @@
 						}
 					},
 					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"mensagem": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"mensagem"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Emprestimo"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/emprestimos/atrasados": {
+			"get": {
+				"operationId": "ListarEmprestimosAtrasados",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/EmprestimoDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"500": {
 						"description": "",
 						"content": {
 							"application/json": {
@@ -970,31 +1070,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/emprestimos/atrasados": {
-			"get": {
-				"operationId": "ListarEmprestimosAtrasados",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/EmprestimoDto"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Emprestimo"
-				],
-				"security": [],
-				"parameters": []
 			}
 		}
 	},

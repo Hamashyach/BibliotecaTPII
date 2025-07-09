@@ -39,18 +39,27 @@ export class UsuarioService {
     }
     
     async criar(dadosCriacao: Omit<Usuario, 'id'>): Promise<UsuarioDto> {
+        // Validação de email existente
         const emailExistente = await this.usuarioRepositorio.filtrarUsuarioPorEmail(dadosCriacao.email);
         if (emailExistente) {
             throw new Error('Este email já está em uso.');
         }
 
+        // NOVO: Validação do comprimento da senha ANTES de fazer o hash
+        if (dadosCriacao.senha.length < 6) {
+            throw new Error('Senha deve ter pelo menos 6 caracteres.');
+        }
+
         const saltRounds = 10;
         const senhaHash = await bcrypt.hash(dadosCriacao.senha, saltRounds);
         
+        // O construtor de Usuário ainda mantém suas validações para segurança e consistência,
+        // mas a validação de comprimento de senha específica para a senha *original*
+        // agora é feita aqui no serviço.
         const novoUsuario = new Usuario(
             dadosCriacao.nome,
             dadosCriacao.email,
-            senhaHash,
+            senhaHash, // Passando a senha já hashada
             dadosCriacao.perfil || 'usuario'
         );
 

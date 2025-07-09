@@ -1,4 +1,4 @@
-// frontend/js/gerenciar_usuarios.js
+// frontend/js/gerenciarUsuario.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('searchInput');
@@ -10,16 +10,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const selectedUserNameElement = document.getElementById('selectedUserName');
     const userLoansContainer = document.getElementById('userLoansContainer');
 
-    let allUsers = []; // Para armazenar todos os usuários carregados
+    let allUsers = []; // Para armazenar TODOS os usuários carregados do backend
+    let normalUsers = []; // NOVO: Para armazenar apenas usuários normais (filtrados)
     let allBooks = []; // Para armazenar todos os livros carregados
     let allLoans = []; // Para armazenar todos os empréstimos carregados
 
     const fetchAllData = async () => {
         try {
             loadingUsersMessage.textContent = 'Carregando usuários...';
+            
             // Fetch all users
             const usersResponse = await fetch('http://localhost:3040/api/usuarios');
             allUsers = await usersResponse.json();
+            
+            // FILTRAR AQUI: Apenas usuários com perfil 'usuario'
+            normalUsers = allUsers.filter(user => user.perfil === 'usuario');
 
             // Fetch all books for loan details
             const booksResponse = await fetch('http://localhost:3040/api/livros');
@@ -29,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const loansResponse = await fetch('http://localhost:3040/api/emprestimos');
             allLoans = await loansResponse.json();
 
-            displayUsers(allUsers); // Exibe todos os usuários inicialmente
+            displayUsers(normalUsers); // Exibe apenas os usuários normais inicialmente
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
             userListContainer.innerHTML = '<p class="no-results error">Erro ao carregar lista de usuários.</p>';
@@ -142,7 +147,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Event Listeners
     searchButton.addEventListener('click', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const filteredUsers = allUsers.filter(user => 
+        // Filtra AGORA apenas nos usuários normais para pesquisa
+        const filteredUsers = normalUsers.filter(user => 
             user.nome.toLowerCase().includes(searchTerm) || 
             user.email.toLowerCase().includes(searchTerm)
         );
@@ -151,7 +157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     clearSearchButton.addEventListener('click', () => {
         searchInput.value = '';
-        displayUsers(allUsers); // Mostra todos os usuários novamente
+        displayUsers(normalUsers); // Mostra todos os usuários normais novamente
         loanDetailsSection.style.display = 'none'; // Esconde a seção de detalhes de empréstimos
     });
 

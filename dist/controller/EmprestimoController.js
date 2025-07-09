@@ -27,6 +27,7 @@ const EmprestimoService_1 = require("../Service/EmprestimoService");
 const RepositoryFactory_1 = require("../patterns/Factory/RepositoryFactory");
 const CommandManager_1 = require("../patterns/Command/CommandManager");
 const MultaAtrasoSimplesStrategy_1 = require("../patterns/Strategy/implementacoes/MultaAtrasoSimplesStrategy");
+const SemMultaStrategy_1 = require("../patterns/Strategy/implementacoes/SemMultaStrategy"); // Importar SemMultaStrategy
 let EmprestimoController = class EmprestimoController extends tsoa_1.Controller {
     constructor() {
         super(...arguments);
@@ -48,18 +49,28 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
                     resError(409, { mensagem: error.message });
                 }
                 else {
+                    throw error; // Lança outros erros
                 }
-                return undefined;
+                return undefined; // Para satisfazer o tipo de retorno
             }
         });
     }
     /**
      * Registra a devolução de um livro a partir do ID do empréstimo.
+     * @param id O ID do empréstimo a ser devolvido.
+     * @param body O corpo da requisição contendo o tipo de estratégia de multa.
      */
-    devolverEmprestimo(id, resError) {
+    devolverEmprestimo(id, body, resError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const estrategia = new MultaAtrasoSimplesStrategy_1.MultaAtrasoSimplesStrategy();
+                let estrategia;
+                // Seleciona a estratégia baseada no input do frontend
+                if (body.strategyType === 'sem_multa') {
+                    estrategia = new SemMultaStrategy_1.SemMultaStrategy();
+                }
+                else {
+                    estrategia = new MultaAtrasoSimplesStrategy_1.MultaAtrasoSimplesStrategy();
+                }
                 const resultadoDevolucao = yield this.emprestimoService.devolver(id, estrategia);
                 return resultadoDevolucao;
             }
@@ -71,9 +82,9 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
                     resError(409, { mensagem: error.message });
                 }
                 else {
-                    throw error;
+                    throw error; // Lança outros erros
                 }
-                return undefined;
+                return undefined; // Para satisfazer o tipo de retorno
             }
         });
     }
@@ -94,6 +105,18 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
     listarTodosEmprestimos() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.emprestimoService.buscarTodos();
+        });
+    }
+    listarEmprestimosAtrasados(resError) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const emprestimos = yield this.emprestimoService.buscarEmprestimosAtrasados();
+                return emprestimos.map(e => this.emprestimoService.emprestimoParaDto(e));
+            }
+            catch (error) {
+                console.error("Erro no backend ao listar empréstimos atrasados:", error);
+                return resError(500, { mensagem: error.message || "Erro interno do servidor ao listar empréstimos atrasados." });
+            }
         });
     }
     /**
@@ -117,15 +140,6 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
             return this.emprestimoService.buscarPorNomeUsuario(nome);
         });
     }
-    listarEmprestimosAtrasados() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const emprestimos = yield this.emprestimoService.buscarEmprestimosAtrasados();
-            // Mapeie para DTOs se necessário, similar ao UsuarioService/Controller
-            // Se EmprestimoDto não existe, pode retornar o próprio Emprestimo[] ou criar o DTO.
-            // Exemplo: return emprestimos.map(e => new EmprestimoDto(e.id, e.livroId, ...));
-            return emprestimos.map(e => this.emprestimoService['emprestimoParaDto'](e));
-        });
-    }
 };
 exports.EmprestimoController = EmprestimoController;
 __decorate([
@@ -141,9 +155,10 @@ __decorate([
     (0, tsoa_1.Put)("{id}/devolver"),
     (0, tsoa_1.SuccessResponse)("200", "OK"),
     __param(0, (0, tsoa_1.Path)()),
-    __param(1, (0, tsoa_1.Res)()),
+    __param(1, (0, tsoa_1.Body)()),
+    __param(2, (0, tsoa_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Function]),
+    __metadata("design:paramtypes", [Number, Object, Function]),
     __metadata("design:returntype", Promise)
 ], EmprestimoController.prototype, "devolverEmprestimo", null);
 __decorate([
@@ -162,6 +177,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], EmprestimoController.prototype, "listarTodosEmprestimos", null);
 __decorate([
+    (0, tsoa_1.Get)("/atrasados") // Rota: GET /emprestimos/atrasados
+    ,
+    __param(0, (0, tsoa_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Function]),
+    __metadata("design:returntype", Promise)
+], EmprestimoController.prototype, "listarEmprestimosAtrasados", null);
+__decorate([
     (0, tsoa_1.Get)("{id}") // Rota: GET /emprestimos/1
     ,
     __param(0, (0, tsoa_1.Path)()),
@@ -178,13 +201,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], EmprestimoController.prototype, "listarEmprestimosPorNomeUsuario", null);
-__decorate([
-    (0, tsoa_1.Get)("/atrasados") // Nova rota: GET /emprestimos/atrasados
-    ,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], EmprestimoController.prototype, "listarEmprestimosAtrasados", null);
 exports.EmprestimoController = EmprestimoController = __decorate([
     (0, tsoa_1.Route)("emprestimos"),
     (0, tsoa_1.Tags)("Emprestimo")

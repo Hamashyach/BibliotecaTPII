@@ -70,6 +70,7 @@ const models = {
             "titulo": { "dataType": "string", "required": true },
             "autor": { "dataType": "string", "required": true },
             "categoria": { "dataType": "string", "required": true },
+            "isAvailable": { "dataType": "boolean" },
         },
         "additionalProperties": false,
     },
@@ -352,6 +353,31 @@ function RegisterRoutes(app) {
         });
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsLivroController_buscarLivrosComFiltro = {
+        termo: { "in": "query", "name": "termo", "dataType": "string" },
+    };
+    app.get('/livros/buscar', ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController)), ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController.prototype.buscarLivrosComFiltro)), function LivroController_buscarLivrosComFiltro(request, response, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+            let validatedArgs = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_buscarLivrosComFiltro, request, response });
+                const controller = new LivroController_1.LivroController();
+                yield templateService.apiHandler({
+                    methodName: 'buscarLivrosComFiltro',
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsEmprestimoController_cadastrarEmprestimo = {
         dto: { "in": "body", "name": "dto", "required": true, "ref": "EmprestimoRequestDto" },
         resError: { "in": "res", "name": "409", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
@@ -380,6 +406,7 @@ function RegisterRoutes(app) {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsEmprestimoController_devolverEmprestimo = {
         id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
+        body: { "in": "body", "name": "body", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "strategyType": { "dataType": "string" } } },
         resError: { "in": "res", "name": "409", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
     };
     app.put('/emprestimos/:id/devolver', ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController)), ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController.prototype.devolverEmprestimo)), function EmprestimoController_devolverEmprestimo(request, response, next) {
@@ -452,6 +479,31 @@ function RegisterRoutes(app) {
         });
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    const argsEmprestimoController_listarEmprestimosAtrasados = {
+        resError: { "in": "res", "name": "500", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
+    };
+    app.get('/emprestimos/atrasados', ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController)), ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController.prototype.listarEmprestimosAtrasados)), function EmprestimoController_listarEmprestimosAtrasados(request, response, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+            let validatedArgs = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsEmprestimoController_listarEmprestimosAtrasados, request, response });
+                const controller = new EmprestimoController_1.EmprestimoController();
+                yield templateService.apiHandler({
+                    methodName: 'listarEmprestimosAtrasados',
+                    controller,
+                    response,
+                    next,
+                    validatedArgs,
+                    successStatus: undefined,
+                });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     const argsEmprestimoController_filtrarEmprestimoPorId = {
         id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
         resNaoEncontrado: { "in": "res", "name": "404", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
@@ -490,29 +542,6 @@ function RegisterRoutes(app) {
                 const controller = new EmprestimoController_1.EmprestimoController();
                 yield templateService.apiHandler({
                     methodName: 'listarEmprestimosPorNomeUsuario',
-                    controller,
-                    response,
-                    next,
-                    validatedArgs,
-                    successStatus: undefined,
-                });
-            }
-            catch (err) {
-                return next(err);
-            }
-        });
-    });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsEmprestimoController_listarEmprestimosAtrasados = {};
-    app.get('/emprestimos/atrasados', ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController)), ...((0, runtime_1.fetchMiddlewares)(EmprestimoController_1.EmprestimoController.prototype.listarEmprestimosAtrasados)), function EmprestimoController_listarEmprestimosAtrasados(request, response, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-            let validatedArgs = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsEmprestimoController_listarEmprestimosAtrasados, request, response });
-                const controller = new EmprestimoController_1.EmprestimoController();
-                yield templateService.apiHandler({
-                    methodName: 'listarEmprestimosAtrasados',
                     controller,
                     response,
                     next,

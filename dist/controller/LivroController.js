@@ -47,6 +47,8 @@ let LivroController = class LivroController extends tsoa_1.Controller {
     }
     listarTodosLivros() {
         return __awaiter(this, void 0, void 0, function* () {
+            // Agora, este endpoint pode ser substituído por /livros/buscar sem termo
+            // Ou você pode mantê-lo e chamar this.livroService.buscarTodos();
             return this.livroService.buscarTodos();
         });
     }
@@ -57,6 +59,17 @@ let LivroController = class LivroController extends tsoa_1.Controller {
                 return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
             }
             return livro;
+        });
+    }
+    // NOVO ENDPOINT: Busca livros com filtro
+    /**
+     * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
+     * Inclui informação de disponibilidade.
+     * @param termo Termo de busca para título, autor, categoria ou ID do livro.
+     */
+    buscarLivrosComFiltro(termo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.livroService.buscarLivrosComFiltro(termo);
         });
     }
 };
@@ -84,6 +97,14 @@ __decorate([
     __metadata("design:paramtypes", [Number, Function]),
     __metadata("design:returntype", Promise)
 ], LivroController.prototype, "filtrarLivroPorId", null);
+__decorate([
+    (0, tsoa_1.Get)("/buscar") // Rota: GET /livros/buscar?termo=exemplo
+    ,
+    __param(0, (0, tsoa_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], LivroController.prototype, "buscarLivrosComFiltro", null);
 exports.LivroController = LivroController = __decorate([
     (0, tsoa_1.Route)("livros"),
     (0, tsoa_1.Tags)("Livro")

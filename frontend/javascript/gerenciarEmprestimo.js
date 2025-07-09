@@ -1,4 +1,5 @@
 // frontend/js/gerenciar_emprestimos.js
+// CÓDIGO CORRIGIDO E ATUALIZADO
 
 document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('searchInput');
@@ -24,11 +25,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             allBooks = await booksResponse.json();
             const bookMap = new Map(allBooks.map(book => [book.id, book]));
 
-            // Buscar todos os empréstimos
-            const loansResponse = await fetch('http://localhost:3040/api/emprestimos');
-            allLoans = await loansResponse.json();
+            // CORREÇÃO AQUI: Buscar TODOS os empréstimos e atribuir a 'allLoans'
+            const loansResponse = await fetch('http://localhost:3040/api/emprestimos'); // Buscar TODOS os empréstimos
+            allLoans = await loansResponse.json(); // Atribuir à variável correta
 
-            displayLoans(allLoans, userMap, bookMap); // Exibe todos os empréstimos inicialmente
+            // Remover console.log(atrasados); pois 'atrasados' não está sendo usado
+            // const atrasadosResponse = await fetch('http://localhost:3040/api/emprestimos/atrasados');
+            // const atrasados = await atrasadosResponse.json();
+            // console.log(atrasados);
+
+            // Exibe todos os empréstimos que foram carregados em 'allLoans'
+            displayLoans(allLoans, userMap, bookMap); 
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
             loansListContainer.innerHTML = '<p class="no-results-message error">Erro ao carregar lista de empréstimos.</p>';

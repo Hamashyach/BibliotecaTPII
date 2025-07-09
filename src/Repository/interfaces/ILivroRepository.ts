@@ -7,6 +7,6 @@ export interface ILivroRepository {
     filtrarLivroPorId(id: number): Promise<Livro | null>;
     filtrarTodosLivros(): Promise<Livro[]>;
     filtrarLivroPorTituloEAutor(titulo: string, autor: string): Promise<Livro | null>;
-    
+    buscarLivrosPorTermo(termo: string): Promise<Livro[]>;
 
 }

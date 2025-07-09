@@ -72,13 +72,22 @@ class UsuarioService {
     }
     criar(dadosCriacao) {
         return __awaiter(this, void 0, void 0, function* () {
+            // Validação de email existente
             const emailExistente = yield this.usuarioRepositorio.filtrarUsuarioPorEmail(dadosCriacao.email);
             if (emailExistente) {
                 throw new Error('Este email já está em uso.');
             }
+            // NOVO: Validação do comprimento da senha ANTES de fazer o hash
+            if (dadosCriacao.senha.length < 6) {
+                throw new Error('Senha deve ter pelo menos 6 caracteres.');
+            }
             const saltRounds = 10;
             const senhaHash = yield bcrypt.hash(dadosCriacao.senha, saltRounds);
-            const novoUsuario = new Usuario_1.Usuario(dadosCriacao.nome, dadosCriacao.email, senhaHash, dadosCriacao.perfil || 'usuario');
+            // O construtor de Usuário ainda mantém suas validações para segurança e consistência,
+            // mas a validação de comprimento de senha específica para a senha *original*
+            // agora é feita aqui no serviço.
+            const novoUsuario = new Usuario_1.Usuario(dadosCriacao.nome, dadosCriacao.email, senhaHash, // Passando a senha já hashada
+            dadosCriacao.perfil || 'usuario');
             const usuarioSalvo = yield this.usuarioRepositorio.inserirUsuario(novoUsuario);
             this.notificarObservers(usuarioSalvo);
             return this.usuarioParaDto(usuarioSalvo);

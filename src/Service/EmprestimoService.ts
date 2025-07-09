@@ -31,7 +31,7 @@ export class EmprestimoService {
     }
 
     // Função auxiliar para converter o modelo em DTO, tratando corretamente a data nula
-    private emprestimoParaDto(emprestimo: Emprestimo): EmprestimoDto {
+    public emprestimoParaDto(emprestimo: Emprestimo): EmprestimoDto {
         return {
             id: emprestimo.id!,
             livroId: emprestimo.livroId,

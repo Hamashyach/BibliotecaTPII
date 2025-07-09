@@ -26,7 +26,6 @@ export class LivroRepository implements ILivroRepository {
         }
     }
 
-    // Função auxiliar para converter uma linha do banco em um objeto Livro
     private linhaParaLivro(linha: any): Livro {
         const livro = new Livro(linha.titulo, linha.autor, linha.categoria);
         livro.id = linha.id;
@@ -110,6 +109,27 @@ export class LivroRepository implements ILivroRepository {
             return resultado.map(this.linhaParaLivro);
         } catch (err: any) {
             console.error('Erro ao listar todos os livros:', err);
+            throw err;
+        }
+    }
+
+    // NOVO MÉTODO: Busca livros por termo (título, autor, categoria, ou ID)
+    async buscarLivrosPorTermo(termo: string): Promise<Livro[]> {
+        const termoLike = `%${termo}%`;
+        let query = "SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ? OR categoria LIKE ?";
+        const params: (string | number)[] = [termoLike, termoLike, termoLike];
+
+        // Se o termo de busca puder ser um ID numérico, adicione a condição
+        if (!isNaN(Number(termo))) { // Verifica se o termo é um número
+            query += " OR id = ?";
+            params.push(Number(termo));
+        }
+
+        try {
+            const resultado = await executarComandoSQL(query, params);
+            return resultado.map(this.linhaParaLivro);
+        } catch (err: any) {
+            console.error(`Erro ao buscar livros por termo '${termo}':`, err);
             throw err;
         }
     }

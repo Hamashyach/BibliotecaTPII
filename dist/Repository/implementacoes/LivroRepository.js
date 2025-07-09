@@ -35,7 +35,6 @@ class LivroRepository {
             }
         });
     }
-    // Função auxiliar para converter uma linha do banco em um objeto Livro
     linhaParaLivro(linha) {
         const livro = new Livro_1.Livro(linha.titulo, linha.autor, linha.categoria);
         livro.id = linha.id;
@@ -130,6 +129,27 @@ class LivroRepository {
             }
             catch (err) {
                 console.error('Erro ao listar todos os livros:', err);
+                throw err;
+            }
+        });
+    }
+    // NOVO MÉTODO: Busca livros por termo (título, autor, categoria, ou ID)
+    buscarLivrosPorTermo(termo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const termoLike = `%${termo}%`;
+            let query = "SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ? OR categoria LIKE ?";
+            const params = [termoLike, termoLike, termoLike];
+            // Se o termo de busca puder ser um ID numérico, adicione a condição
+            if (!isNaN(Number(termo))) { // Verifica se o termo é um número
+                query += " OR id = ?";
+                params.push(Number(termo));
+            }
+            try {
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, params);
+                return resultado.map(this.linhaParaLivro);
+            }
+            catch (err) {
+                console.error(`Erro ao buscar livros por termo '${termo}':`, err);
                 throw err;
             }
         });
