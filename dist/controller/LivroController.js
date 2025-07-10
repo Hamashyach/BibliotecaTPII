@@ -52,15 +52,6 @@ let LivroController = class LivroController extends tsoa_1.Controller {
             return this.livroService.buscarTodos();
         });
     }
-    filtrarLivroPorId(id, resNaoEncontrado) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const livro = yield this.livroService.buscarPorId(id);
-            if (!livro) {
-                return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
-            }
-            return livro;
-        });
-    }
     // NOVO ENDPOINT: Busca livros com filtro
     /**
      * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
@@ -70,6 +61,15 @@ let LivroController = class LivroController extends tsoa_1.Controller {
     buscarLivrosComFiltro(termo) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.livroService.buscarLivrosComFiltro(termo);
+        });
+    }
+    filtrarLivroPorId(id, resNaoEncontrado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const livro = yield this.livroService.buscarPorId(id);
+            if (!livro) {
+                return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
+            }
+            return livro;
         });
     }
 };
@@ -90,14 +90,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LivroController.prototype, "listarTodosLivros", null);
 __decorate([
-    (0, tsoa_1.Get)("{id}"),
-    __param(0, (0, tsoa_1.Path)()),
-    __param(1, (0, tsoa_1.Res)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Function]),
-    __metadata("design:returntype", Promise)
-], LivroController.prototype, "filtrarLivroPorId", null);
-__decorate([
     (0, tsoa_1.Get)("/buscar") // Rota: GET /livros/buscar?termo=exemplo
     ,
     __param(0, (0, tsoa_1.Query)()),
@@ -105,6 +97,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], LivroController.prototype, "buscarLivrosComFiltro", null);
+__decorate([
+    (0, tsoa_1.Get)("{id}"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Function]),
+    __metadata("design:returntype", Promise)
+], LivroController.prototype, "filtrarLivroPorId", null);
 exports.LivroController = LivroController = __decorate([
     (0, tsoa_1.Route)("livros"),
     (0, tsoa_1.Tags)("Livro")

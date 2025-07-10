@@ -46,12 +46,18 @@ exports.UsuarioService = void 0;
 const Usuario_1 = require("../Models/Entity/Usuario");
 const UsuarioDto_1 = require("../Models/dto/UsuarioDto");
 const bcrypt = __importStar(require("bcrypt"));
+const UsuarioActivityService_1 = require("./UsuarioActivityService");
+const UsuarioActivityObserver_1 = require("../patterns/Observer/UsuarioActivityObserver");
+const LogObserver_1 = require("../patterns/Observer/LogObserver");
 class UsuarioService {
     constructor(repositoryFactory) {
         this.repositoryFactory = repositoryFactory;
         this.observers = [];
         // Usa a factory para obter a instância do repositório
         this.usuarioRepositorio = this.repositoryFactory.criarUsuarioRepositorio();
+        this.usuarioActivityService = new UsuarioActivityService_1.UsuarioActivityService(this.repositoryFactory);
+        this.registrarObserver(new UsuarioActivityObserver_1.UsuarioActivityObserver(this.usuarioActivityService));
+        this.registrarObserver(new LogObserver_1.LogObserver());
     }
     registrarObserver(observer) {
         this.observers.push(observer);
@@ -62,9 +68,9 @@ class UsuarioService {
             this.observers.splice(index, 1);
         }
     }
-    notificarObservers(data) {
+    notificarObservers(evento, data, usuarioId) {
         for (const observer of this.observers) {
-            observer.update(data);
+            observer.update({ evento, data, usuarioId });
         }
     }
     usuarioParaDto(usuario) {
@@ -72,7 +78,6 @@ class UsuarioService {
     }
     criar(dadosCriacao) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Validação de email existente
             const emailExistente = yield this.usuarioRepositorio.filtrarUsuarioPorEmail(dadosCriacao.email);
             if (emailExistente) {
                 throw new Error('Este email já está em uso.');
@@ -83,13 +88,9 @@ class UsuarioService {
             }
             const saltRounds = 10;
             const senhaHash = yield bcrypt.hash(dadosCriacao.senha, saltRounds);
-            // O construtor de Usuário ainda mantém suas validações para segurança e consistência,
-            // mas a validação de comprimento de senha específica para a senha *original*
-            // agora é feita aqui no serviço.
-            const novoUsuario = new Usuario_1.Usuario(dadosCriacao.nome, dadosCriacao.email, senhaHash, // Passando a senha já hashada
-            dadosCriacao.perfil || 'usuario');
+            const novoUsuario = new Usuario_1.Usuario(dadosCriacao.nome, dadosCriacao.email, senhaHash, dadosCriacao.perfil || 'usuario');
             const usuarioSalvo = yield this.usuarioRepositorio.inserirUsuario(novoUsuario);
-            this.notificarObservers(usuarioSalvo);
+            this.notificarObservers('usuario:criado', this.usuarioParaDto(usuarioSalvo), usuarioSalvo.id);
             return this.usuarioParaDto(usuarioSalvo);
         });
     }
@@ -112,6 +113,7 @@ class UsuarioService {
                 throw new Error('Usuário não encontrado.');
             }
             yield this.usuarioRepositorio.deletarUsuario(id);
+            this.notificarObservers('usuario:deletado', { id: id, email: usuarioExistente.email }, id);
         });
     }
     atualizar(dto) {
@@ -120,12 +122,18 @@ class UsuarioService {
             if (!usuarioExistente) {
                 throw new Error('Usuário para atualizar não encontrado.');
             }
+            const oldUsuarioData = Object.assign({}, usuarioExistente); // Clonar para capturar o estado antes da atualização
             usuarioExistente.nome = dto.nome;
             usuarioExistente.email = dto.email;
             if (dto.perfil !== undefined) {
                 usuarioExistente.perfil = dto.perfil;
             }
             const usuarioAtualizado = yield this.usuarioRepositorio.atualizarUsuario(usuarioExistente);
+            this.notificarObservers('usuario:atualizado', {
+                id: usuarioAtualizado.id,
+                old: { nome: oldUsuarioData.nome, email: oldUsuarioData.email, perfil: oldUsuarioData.perfil },
+                new: { nome: usuarioAtualizado.nome, email: usuarioAtualizado.email, perfil: usuarioAtualizado.perfil }
+            }, usuarioAtualizado.id);
             return this.usuarioParaDto(usuarioAtualizado);
         });
     }
@@ -133,12 +141,15 @@ class UsuarioService {
         return __awaiter(this, void 0, void 0, function* () {
             const usuario = yield this.usuarioRepositorio.filtrarUsuarioPorEmail(dto.email);
             if (!usuario) {
+                this.notificarObservers('login:falha', { email: dto.email, mensagem: 'Email não encontrado' });
                 throw new Error('Email ou senha inválidos.');
             }
             const senhaValida = yield bcrypt.compare(dto.senha, usuario.senha);
             if (!senhaValida) {
+                this.notificarObservers('login:falha', { email: dto.email, mensagem: 'Senha inválida' });
                 throw new Error('Email ou senha inválidos.');
             }
+            this.notificarObservers('login:sucesso', { email: usuario.email, perfil: usuario.perfil }, usuario.id); // Passe o ID do usuário logado
             return usuario;
         });
     }

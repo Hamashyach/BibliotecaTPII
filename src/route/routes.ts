@@ -91,6 +91,7 @@ const models: TsoaRoute.Models = {
             "dataEmprestimo": {"dataType":"datetime","required":true},
             "dataDevolucao": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
             "dataDevolucaoPrevista": {"dataType":"datetime","required":true},
+            "statusTexto": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -375,6 +376,36 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsLivroController_buscarLivrosComFiltro: Record<string, TsoaRoute.ParameterSchema> = {
+                termo: {"in":"query","name":"termo","dataType":"string"},
+        };
+        app.get('/livros/buscar',
+            ...(fetchMiddlewares<RequestHandler>(LivroController)),
+            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.buscarLivrosComFiltro)),
+
+            async function LivroController_buscarLivrosComFiltro(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_buscarLivrosComFiltro, request, response });
+
+                const controller = new LivroController();
+
+              await templateService.apiHandler({
+                methodName: 'buscarLivrosComFiltro',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsLivroController_filtrarLivroPorId: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
                 resNaoEncontrado: {"in":"res","name":"404","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"mensagem":{"dataType":"string","required":true}}},
@@ -395,36 +426,6 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'filtrarLivroPorId',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsLivroController_buscarLivrosComFiltro: Record<string, TsoaRoute.ParameterSchema> = {
-                termo: {"in":"query","name":"termo","dataType":"string"},
-        };
-        app.get('/livros/buscar',
-            ...(fetchMiddlewares<RequestHandler>(LivroController)),
-            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.buscarLivrosComFiltro)),
-
-            async function LivroController_buscarLivrosComFiltro(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_buscarLivrosComFiltro, request, response });
-
-                const controller = new LivroController();
-
-              await templateService.apiHandler({
-                methodName: 'buscarLivrosComFiltro',
                 controller,
                 response,
                 next,

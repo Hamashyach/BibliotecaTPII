@@ -36,18 +36,6 @@ export class LivroController extends Controller {
         return this.livroService.buscarTodos();
     }
 
-    @Get("{id}")
-    public async filtrarLivroPorId(
-        @Path() id: number,
-        @Res() resNaoEncontrado: TsoaResponse<404, { mensagem: string }>
-    ): Promise<LivroDto> {
-        const livro = await this.livroService.buscarPorId(id);
-        if (!livro) {
-            return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
-        }
-        return livro;
-    }
-
     // NOVO ENDPOINT: Busca livros com filtro
     /**
      * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
@@ -60,4 +48,18 @@ export class LivroController extends Controller {
     ): Promise<LivroDto[]> {
         return this.livroService.buscarLivrosComFiltro(termo);
     }
+
+    @Get("{id}")
+    public async filtrarLivroPorId(
+        @Path() id: number,
+        @Res() resNaoEncontrado: TsoaResponse<404, { mensagem: string }>
+    ): Promise<LivroDto> {
+        const livro = await this.livroService.buscarPorId(id);
+        if (!livro) {
+            return resNaoEncontrado(404, { mensagem: "Livro não encontrado." });
+        }
+        return livro;
+    }
+
+    
 }

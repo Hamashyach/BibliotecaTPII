@@ -94,6 +94,7 @@ const models = {
             "dataEmprestimo": { "dataType": "datetime", "required": true },
             "dataDevolucao": { "dataType": "union", "subSchemas": [{ "dataType": "datetime" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "dataDevolucaoPrevista": { "dataType": "datetime", "required": true },
+            "statusTexto": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -327,19 +328,18 @@ function RegisterRoutes(app) {
         });
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLivroController_filtrarLivroPorId = {
-        id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
-        resNaoEncontrado: { "in": "res", "name": "404", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
+    const argsLivroController_buscarLivrosComFiltro = {
+        termo: { "in": "query", "name": "termo", "dataType": "string" },
     };
-    app.get('/livros/:id', ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController)), ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController.prototype.filtrarLivroPorId)), function LivroController_filtrarLivroPorId(request, response, next) {
+    app.get('/livros/buscar', ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController)), ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController.prototype.buscarLivrosComFiltro)), function LivroController_buscarLivrosComFiltro(request, response, next) {
         return __awaiter(this, void 0, void 0, function* () {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
             let validatedArgs = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_filtrarLivroPorId, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_buscarLivrosComFiltro, request, response });
                 const controller = new LivroController_1.LivroController();
                 yield templateService.apiHandler({
-                    methodName: 'filtrarLivroPorId',
+                    methodName: 'buscarLivrosComFiltro',
                     controller,
                     response,
                     next,
@@ -353,18 +353,19 @@ function RegisterRoutes(app) {
         });
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsLivroController_buscarLivrosComFiltro = {
-        termo: { "in": "query", "name": "termo", "dataType": "string" },
+    const argsLivroController_filtrarLivroPorId = {
+        id: { "in": "path", "name": "id", "required": true, "dataType": "double" },
+        resNaoEncontrado: { "in": "res", "name": "404", "required": true, "dataType": "nestedObjectLiteral", "nestedProperties": { "mensagem": { "dataType": "string", "required": true } } },
     };
-    app.get('/livros/buscar', ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController)), ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController.prototype.buscarLivrosComFiltro)), function LivroController_buscarLivrosComFiltro(request, response, next) {
+    app.get('/livros/:id', ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController)), ...((0, runtime_1.fetchMiddlewares)(LivroController_1.LivroController.prototype.filtrarLivroPorId)), function LivroController_filtrarLivroPorId(request, response, next) {
         return __awaiter(this, void 0, void 0, function* () {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
             let validatedArgs = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_buscarLivrosComFiltro, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsLivroController_filtrarLivroPorId, request, response });
                 const controller = new LivroController_1.LivroController();
                 yield templateService.apiHandler({
-                    methodName: 'buscarLivrosComFiltro',
+                    methodName: 'filtrarLivroPorId',
                     controller,
                     response,
                     next,

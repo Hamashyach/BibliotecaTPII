@@ -1,5 +1,5 @@
 // frontend/js/gerenciar_emprestimos.js
-// CÓDIGO CORRIGIDO E ATUALIZADO
+// CÓDIGO CORRIGIDO E ATUALIZADO PARA USAR statusTexto DO BACKEND
 
 document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('searchInput');
@@ -25,16 +25,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             allBooks = await booksResponse.json();
             const bookMap = new Map(allBooks.map(book => [book.id, book]));
 
-            // CORREÇÃO AQUI: Buscar TODOS os empréstimos e atribuir a 'allLoans'
-            const loansResponse = await fetch('http://localhost:3040/api/emprestimos'); // Buscar TODOS os empréstimos
-            allLoans = await loansResponse.json(); // Atribuir à variável correta
+            const loansResponse = await fetch('http://localhost:3040/api/emprestimos');
+            allLoans = await loansResponse.json();
 
-            // Remover console.log(atrasados); pois 'atrasados' não está sendo usado
-            // const atrasadosResponse = await fetch('http://localhost:3040/api/emprestimos/atrasados');
-            // const atrasados = await atrasadosResponse.json();
-            // console.log(atrasados);
-
-            // Exibe todos os empréstimos que foram carregados em 'allLoans'
             displayLoans(allLoans, userMap, bookMap); 
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
@@ -79,21 +72,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const dataPrevistaDevolucao = new Date(loan.dataDevolucaoPrevista).toLocaleDateString('pt-BR');
             const dataDevolucaoReal = loan.dataDevolucao ? new Date(loan.dataDevolucao).toLocaleDateString('pt-BR') : 'Empréstimo Ativo';
 
-            let status = '';
-            if (loan.dataDevolucao === null) {
-                const hoje = new Date();
-                hoje.setHours(0, 0, 0, 0);
-                const dataPrevista = new Date(loan.dataDevolucaoPrevista);
-                dataPrevista.setHours(0, 0, 0, 0);
-
-                if (dataPrevista < hoje) {
-                    status = '<span style="color: red; font-weight: bold;">Atrasado</span>';
-                } else {
-                    status = '<span style="color: green;">Ativo</span>';
-                }
-            } else {
-                status = 'Devolvido';
+            // NOVO: Usar statusTexto do backend e aplicar classes CSS
+            let statusHtml = '';
+            let statusClass = '';
+            if (loan.statusTexto === 'Atrasado') {
+                statusClass = 'status-atrasado';
+            } else if (loan.statusTexto === 'Ativo') {
+                statusClass = 'status-ativo';
+            } else { // Devolvido
+                statusClass = 'status-devolvido';
             }
+            statusHtml = `<span class="${statusClass}">${loan.statusTexto}</span>`;
+
 
             const row = tbody.insertRow();
             row.innerHTML = `
@@ -103,13 +93,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${dataEmprestimo}</td>
                 <td>${dataPrevistaDevolucao}</td>
                 <td>${dataDevolucaoReal}</td>
-                <td>${status}</td>
-            `;
+                <td>${statusHtml}</td> `;
         });
         loansListContainer.appendChild(table);
     };
 
-    // Event Listeners
+    // Event Listeners (permanecem os mesmos)
     searchButton.addEventListener('click', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const filteredLoans = allLoans.filter(loan => {
@@ -121,7 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return userName.includes(searchTerm) || bookTitle.includes(searchTerm);
         });
-        // Remap user/book names for display after filtering
         const userMap = new Map(allUsers.map(user => [user.id, user]));
         const bookMap = new Map(allBooks.map(book => [book.id, book]));
         displayLoans(filteredLoans, userMap, bookMap);
@@ -131,9 +119,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.value = '';
         const userMap = new Map(allUsers.map(user => [user.id, user]));
         const bookMap = new Map(allBooks.map(book => [book.id, book]));
-        displayLoans(allLoans, userMap, bookMap); // Mostra todos os empréstimos novamente
+        displayLoans(allLoans, userMap, bookMap);
     });
 
-    // Inicia o carregamento de todos os dados quando a página é carregada
     fetchAllData();
 });

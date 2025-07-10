@@ -8,20 +8,27 @@ export class EmprestimoDto {
     dataEmprestimo: Date;
     dataDevolucao: Date | null; 
     dataDevolucaoPrevista: Date;
+    statusTexto: string;
+    valorMulta : number | null;
 
     constructor(
         id: number,
         livroId: number,
         usuarioId: number,
         dataEmprestimo: Date,
-        dataDevolucaoPrevista: Date, // ORDEM MUDADA: antes de dataDevolucao
-        dataDevolucao: Date | null
+        dataDevolucaoPrevista: Date, 
+        dataDevolucao: Date | null,
+        statusTexto: string,
+        valorMulta : number | null
     ) {
         this.id = id;
         this.livroId = livroId;
         this.usuarioId = usuarioId;
         this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista; // Atribuição consistente
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista; 
         this.dataDevolucao = dataDevolucao;
+        this.statusTexto = statusTexto;
+        this.valorMulta = valorMulta;
+    
     }
 }

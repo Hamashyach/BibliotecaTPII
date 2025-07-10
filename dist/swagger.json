@@ -190,6 +190,9 @@
 					"dataDevolucaoPrevista": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"statusTexto": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -198,7 +201,8 @@
 					"usuarioId",
 					"dataEmprestimo",
 					"dataDevolucao",
-					"dataDevolucaoPrevista"
+					"dataDevolucaoPrevista",
+					"statusTexto"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -629,6 +633,42 @@
 				"parameters": []
 			}
 		},
+		"/livros/buscar": {
+			"get": {
+				"operationId": "BuscarLivrosComFiltro",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/LivroDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Lista livros, com opção de filtro por termo (título, autor, categoria, ID).\r\nInclui informação de disponibilidade.",
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Termo de busca para título, autor, categoria ou ID do livro.",
+						"in": "query",
+						"name": "termo",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/livros/{id}": {
 			"get": {
 				"operationId": "FiltrarLivroPorId",
@@ -674,42 +714,6 @@
 						"schema": {
 							"format": "double",
 							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/livros/buscar": {
-			"get": {
-				"operationId": "BuscarLivrosComFiltro",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/LivroDto"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"description": "Lista livros, com opção de filtro por termo (título, autor, categoria, ID).\r\nInclui informação de disponibilidade.",
-				"tags": [
-					"Livro"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"description": "Termo de busca para título, autor, categoria ou ID do livro.",
-						"in": "query",
-						"name": "termo",
-						"required": false,
-						"schema": {
-							"type": "string"
 						}
 					}
 				]

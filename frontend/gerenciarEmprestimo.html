@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerenciamento de Empréstimos - Biblioteca</title> <style>
-    /* Reset básico para todos os elementos */
+    * Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
     }
@@ -88,25 +88,15 @@
       padding: 2rem;
       overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
       background-color: #f9f9f9;
-      
-      /* Estilos para centralizar o wrapper interno do formulário */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      /* O gerenciarUsuario.html NÃO tem display:flex e justify-content:center aqui */
     }
 
-    /* Wrapper interno para centralizar o conteúdo */
-    .content-wrapper {
-        max-width: 1000px; /* Largura máxima para a tabela de empréstimos */
-        width: 100%;
-        box-sizing: border-box;
-        background-color: #fff;
-        padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    .main-content h2 {
+      color: #007bff;
+      margin-top: 0;
     }
-
-    /* Estilos específicos desta tela (similar ao gerenciarUsuario.html) */
+    
+    /* Estilos específicos desta tela (copiados do gerenciar_usuarios.html) */
     .controls-section {
         display: flex;
         justify-content: space-between;
@@ -148,32 +138,86 @@
         background-color: #0056b3;
     }
 
-    .loans-list-section h3 {
+    /* Estilos para a lista de usuários, adaptados para lista de empréstimos */
+    .loans-list-section { /* Renomeado de .user-list-section */
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem; /* Consistent with gerenciarUsuario.html */
+    }
+    .loans-list-section h3 { /* Renomeado de .user-list-section h3 */
         margin-top: 0;
         color: #333;
         border-bottom: 1px solid #eee;
         padding-bottom: 0.5rem;
         margin-bottom: 1rem;
     }
-    .loans-table {
+    .loans-table { /* Renomeado de .user-table */
         width: 100%;
         border-collapse: collapse;
     }
-    .loans-table th, .loans-table td {
+    .loans-table th, .loans-table td { /* Renomeado de .user-table th, td */
         border: 1px solid #ddd;
         padding: 0.7rem;
         text-align: left;
     }
-    .loans-table th {
+    .loans-table th { /* Renomeado de .user-table th */
         background-color: #f2f2f2;
     }
-    .loans-table tbody tr:hover {
+    .loans-table tbody tr:hover { /* Renomeado de .user-table tbody tr:hover */
         background-color: #e9ecef;
+        /* cursor: pointer; -- Opcional se as linhas forem clicáveis */
     }
-    .no-results-message {
+    .no-results-message { /* Similar a .no-results */
         text-align: center;
         color: #6c757d;
         padding: 1rem;
+    }
+
+    /* Seções de detalhes, como 'Empréstimos de [Usuário]' */
+    .loan-details-section { /* Similar a .loan-details-section em gerenciarUsuario.html */
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+        /* display: none; */ /* Pode ser útil para esconder inicialmente */
+    }
+    .loan-details-section h3 { /* Similar a .loan-details-section h3 em gerenciarUsuario.html */
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .loan-details-table { /* Similar a .loan-details-table em gerenciarUsuario.html */
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    .loan-details-table th, .loan-details-table td {
+        border: 1px solid #ddd;
+        padding: 0.7rem;
+        text-align: left;
+    }
+    .loan-details-table th {
+        background-color: #f2f2f2;
+    }
+    .loan-details-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .status-atrasado {
+        color: red;
+        font-weight: bold;
+    }
+    .status-ativo {
+        color: green;
+        font-weight: bold; /* Opcional: deixar em negrito também */
+    }
+    .status-devolvido {
+        color: #6c757d; /* Cor mais neutra para devolvido */
     }
   </style>
 </head>

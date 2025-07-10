@@ -7,6 +7,7 @@ export class Emprestimo {
     dataEmprestimo: Date;
     dataDevolucao: Date | null; 
     dataDevolucaoPrevista: Date;
+    valorMulta: number | null;
 
   
     constructor(livroId: number, usuarioId: number, ) {
@@ -19,5 +20,6 @@ export class Emprestimo {
         this.dataEmprestimo = new Date(); 
         this.dataDevolucao = null; 
         this.dataDevolucaoPrevista = new Date();   
+        this.valorMulta = null;
     }
 }

@@ -4,14 +4,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmprestimoDto = void 0;
 class EmprestimoDto {
-    constructor(id, livroId, usuarioId, dataEmprestimo, dataDevolucaoPrevista, // ORDEM MUDADA: antes de dataDevolucao
-    dataDevolucao) {
+    constructor(id, livroId, usuarioId, dataEmprestimo, dataDevolucaoPrevista, dataDevolucao, statusTexto) {
         this.id = id;
         this.livroId = livroId;
         this.usuarioId = usuarioId;
         this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista; // Atribuição consistente
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
         this.dataDevolucao = dataDevolucao;
+        this.statusTexto = statusTexto;
     }
 }
 exports.EmprestimoDto = EmprestimoDto;
