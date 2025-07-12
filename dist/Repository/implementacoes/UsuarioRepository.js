@@ -1,5 +1,4 @@
 "use strict";
-// src/Repositories/UsuarioRepository.ts
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13,13 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsuarioRepository = void 0;
 const mysql_1 = require("../../Database/mysql");
 const Usuario_1 = require("../../Models/Entity/Usuario");
-// A classe agora implementa a interface que definimos
 class UsuarioRepository {
-    // O construtor chama o método para criar a tabela
     constructor() {
         this.criarTabela();
     }
-    // Método privado para garantir que a tabela 'usuarios' exista
     criarTabela() {
         return __awaiter(this, void 0, void 0, function* () {
             const query = `
@@ -40,8 +36,6 @@ class UsuarioRepository {
             }
         });
     }
-    // Mapeia uma linha do banco para um objeto Usuario
-    // É útil para não repetir código
     rowToUsuario(row) {
         const usuario = new Usuario_1.Usuario(row.nome, row.email, row.senha, row.perfil);
         usuario.id = row.id;
@@ -63,13 +57,12 @@ class UsuarioRepository {
             }
             catch (err) {
                 console.error('Erro ao inserir usuário:', err);
-                throw err; // Relança o erro original
+                throw err;
             }
         });
     }
     atualizarUsuario(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Garantir que o usuário tenha um ID para a atualização
             if (!usuario.id) {
                 throw new Error("Não é possível atualizar um usuário sem ID.");
             }
@@ -142,7 +135,6 @@ class UsuarioRepository {
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, []);
                 console.log('Todos os usuários foram listados com sucesso');
-                // Mapeia cada linha para um objeto Usuario
                 return resultado.map(this.rowToUsuario);
             }
             catch (err) {

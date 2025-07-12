@@ -23,12 +23,9 @@ class EmprestimoService {
         this.emprestimoRepositorio = this.repositoryFactory.criarEmprestimoRepositorio();
         this.livroRepositorio = this.repositoryFactory.criarLivroRepositorio();
         this.usuarioRepositorio = this.repositoryFactory.criarUsuarioRepositorio();
-        // NOVO: Instanciar o UserActivityService aqui
         this.userActivityService = new UsuarioActivityService_1.UsuarioActivityService(this.repositoryFactory);
-        // NOVO: Registrar o UserActivityObserver com este serviço
         this.registrarObserver(new UsuarioActivityObserver_1.UsuarioActivityObserver(this.userActivityService));
-        // Se você ainda tiver o LogObserver e quiser que ele receba notificações, registre-o também.
-        this.registrarObserver(new LogObserver_1.LogObserver()); // Exemplo: Se você mantiver o LogObserver
+        this.registrarObserver(new LogObserver_1.LogObserver());
     }
     registrarObserver(observer) {
         this.observers.push(observer);
@@ -39,25 +36,23 @@ class EmprestimoService {
             this.observers.splice(index, 1);
         }
     }
-    // MODIFICADO: Agora passa um objeto com 'evento', 'data' e 'usuarioId'
     notificarObservers(evento, data, usuarioId) {
         this.observers.forEach(observer => observer.update({ evento, data, usuarioId }));
     }
-    // Função auxiliar para converter o modelo em DTO, tratando corretamente a data nula
     emprestimoParaDto(emprestimo) {
         let statusTexto;
         const hoje = new Date();
-        hoje.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+        hoje.setHours(0, 0, 0, 0);
         const dataPrevistaSemHora = new Date(emprestimo.dataDevolucaoPrevista);
         dataPrevistaSemHora.setHours(0, 0, 0, 0);
         if (emprestimo.dataDevolucao !== null) {
             statusTexto = 'Devolvido';
         }
-        else if (dataPrevistaSemHora <= hoje) { // AQUI ESTÁ A CORREÇÃO: MUDANÇA DE < PARA <=
-            statusTexto = 'Atrasado'; // Empréstimo ativo e data prevista já passou ou é hoje
+        else if (dataPrevistaSemHora < hoje) {
+            statusTexto = 'Atrasado';
         }
         else {
-            statusTexto = 'Ativo'; // Empréstimo ativo e dentro do prazo
+            statusTexto = 'Ativo';
         }
         return {
             id: emprestimo.id,
@@ -66,14 +61,10 @@ class EmprestimoService {
             dataEmprestimo: emprestimo.dataEmprestimo,
             dataDevolucao: emprestimo.dataDevolucao,
             dataDevolucaoPrevista: emprestimo.dataDevolucaoPrevista,
-            statusTexto: statusTexto, // Atribui o status calculado
+            statusTexto: statusTexto,
             valorMulta: emprestimo.valorMulta
         };
     }
-    /**
-     * Realiza um novo empréstimo, aplicando todas as regras de negócio.
-     * Notifica os observadores sobre a criação do empréstimo.
-     */
     criar(dto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuarioId, livroId } = dto;
@@ -97,18 +88,13 @@ class EmprestimoService {
             const dataDevolucaoPrevista = new Date(dataEmprestimo);
             dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + 7);
             const novoEmprestimo = new Emprestimo_1.Emprestimo(livroId, usuarioId);
-            novoEmprestimo.dataEmprestimo = dataEmprestimo; // Garante que a data do modelo seja a mesma
-            novoEmprestimo.dataDevolucaoPrevista = dataDevolucaoPrevista; // Garante que a data do modelo seja a mesma
+            novoEmprestimo.dataEmprestimo = dataEmprestimo;
+            novoEmprestimo.dataDevolucaoPrevista = dataDevolucaoPrevista;
             const emprestimoSalvo = yield this.emprestimoRepositorio.inserirEmprestimo(novoEmprestimo);
-            // NOVO: Notificar o observador de que um empréstimo foi criado
             this.notificarObservers('emprestimo:criado', this.emprestimoParaDto(emprestimoSalvo), usuarioId);
             return this.emprestimoParaDto(emprestimoSalvo);
         });
     }
-    /**
-     * Registra a devolução de um livro.
-     * Notifica os observadores sobre a devolução.
-     */
     devolver(emprestimoId, estrategiaDeMulta) {
         return __awaiter(this, void 0, void 0, function* () {
             const emprestimo = yield this.emprestimoRepositorio.filtrarEmprestimoPorId(emprestimoId);
@@ -121,8 +107,6 @@ class EmprestimoService {
             const valorMulta = estrategiaDeMulta.calcular(emprestimo);
             emprestimo.dataDevolucao = new Date();
             const emprestimoAtualizado = yield this.emprestimoRepositorio.atualizarEmprestimo(emprestimo);
-            // NOVO: Notificar o observador de que um empréstimo foi devolvido
-            // Passe o emprestimoAtualizado e a multa. O observer vai inferir o usuarioId.
             this.notificarObservers('emprestimo:devolvido', { emprestimo: this.emprestimoParaDto(emprestimoAtualizado), multa: valorMulta }, emprestimo.usuarioId);
             return {
                 emprestimo: this.emprestimoParaDto(emprestimoAtualizado),
@@ -130,39 +114,24 @@ class EmprestimoService {
             };
         });
     }
-    /**
-     * Busca um empréstimo específico pelo seu ID.
-     */
     buscarPorId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const emprestimo = yield this.emprestimoRepositorio.filtrarEmprestimoPorId(id);
             return emprestimo ? this.emprestimoParaDto(emprestimo) : null;
         });
     }
-    /**
-     * Lista todos os empréstimos registrados no sistema.
-     */
     buscarTodos() {
         return __awaiter(this, void 0, void 0, function* () {
             const emprestimos = yield this.emprestimoRepositorio.filtrarTodosEmprestimos();
             return emprestimos.map(this.emprestimoParaDto);
         });
     }
-    /**
-     * Encontra todos os empréstimos feitos por usuários com um determinado nome.
-     */
     buscarPorNomeUsuario(nome) {
         return __awaiter(this, void 0, void 0, function* () {
             const emprestimos = yield this.emprestimoRepositorio.filtrarEmprestimosPorNomeUsuario(nome);
             return emprestimos.map(this.emprestimoParaDto);
         });
     }
-    /**
-     * Deleta um registro de empréstimo.
-     * Notifica os observadores sobre a exclusão.
-     * Cuidado: Geralmente não se deleta um histórico de empréstimo.
-     * Este método é para fins de manutenção ou para o comando 'desfazer'.
-     */
     deletar(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const emprestimoExistente = yield this.emprestimoRepositorio.filtrarEmprestimoPorId(id);
@@ -170,28 +139,21 @@ class EmprestimoService {
                 throw new Error("Empréstimo não encontrado para ser deletado.");
             }
             yield this.emprestimoRepositorio.deletarEmprestimo(id);
-            // NOVO: Notificar o observador de que um empréstimo foi deletado
             this.notificarObservers('emprestimo:deletado', { id: id, usuarioId: emprestimoExistente.usuarioId, livroId: emprestimoExistente.livroId }, emprestimoExistente.usuarioId);
         });
     }
-    /**
-     * Método para buscar empréstimos atrasados.
-     */
     buscarEmprestimosAtrasados() {
         return __awaiter(this, void 0, void 0, function* () {
             const todosEmprestimos = yield this.emprestimoRepositorio.filtrarTodosEmprestimos();
             const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+            hoje.setHours(0, 0, 0, 0);
             const emprestimosAtrasados = todosEmprestimos.filter(emprestimo => {
-                // Verifica se o empréstimo ainda não foi devolvido
                 if (emprestimo.dataDevolucao === null) {
-                    // Converte a data prevista de devolução para objeto Date e zera a hora
                     const dataPrevista = new Date(emprestimo.dataDevolucaoPrevista);
                     dataPrevista.setHours(0, 0, 0, 0);
-                    // CORRIGIDO: Se a data prevista de devolução for anterior OU IGUAL a hoje, está atrasado
-                    return dataPrevista <= hoje; // AQUI ESTÁ A CORREÇÃO!
+                    return dataPrevista < hoje;
                 }
-                return false; // Não está atrasado se já foi devolvido
+                return false;
             });
             return emprestimosAtrasados;
         });

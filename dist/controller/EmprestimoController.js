@@ -49,22 +49,21 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
                     resError(409, { mensagem: error.message });
                 }
                 else {
-                    throw error; // Lança outros erros
+                    throw error;
                 }
-                return undefined; // Para satisfazer o tipo de retorno
+                return undefined;
             }
         });
     }
     /**
      * Registra a devolução de um livro a partir do ID do empréstimo.
-     * @param id O ID do empréstimo a ser devolvido.
-     * @param body O corpo da requisição contendo o tipo de estratégia de multa.
+     * @param id
+     * @param body
      */
     devolverEmprestimo(id, body, resError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let estrategia;
-                // Seleciona a estratégia baseada no input do frontend
                 if (body.strategyType === 'sem_multa') {
                     estrategia = new SemMultaStrategy_1.SemMultaStrategy();
                 }
@@ -82,9 +81,9 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
                     resError(409, { mensagem: error.message });
                 }
                 else {
-                    throw error; // Lança outros erros
+                    throw error;
                 }
-                return undefined; // Para satisfazer o tipo de retorno
+                return undefined;
             }
         });
     }
@@ -133,7 +132,7 @@ let EmprestimoController = class EmprestimoController extends tsoa_1.Controller 
     }
     /**
      * Busca empréstimos pelo nome do usuário.
-     * @param nome O nome (ou parte do nome) do usuário para buscar.
+     * @param nome
      */
     listarEmprestimosPorNomeUsuario(nome) {
         return __awaiter(this, void 0, void 0, function* () {

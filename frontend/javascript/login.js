@@ -30,7 +30,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
             window.location.href = 'admin.html';
         } else {
             
-            errorMessageElement.textContent = data.message || 'Ocorreu um erro. Tente novamente.';
+            errorMessageElement.textContent = data.message || 'Credenciais inválidas.';
         }
 
     } catch (error) {

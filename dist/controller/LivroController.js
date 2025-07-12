@@ -47,16 +47,12 @@ let LivroController = class LivroController extends tsoa_1.Controller {
     }
     listarTodosLivros() {
         return __awaiter(this, void 0, void 0, function* () {
-            // Agora, este endpoint pode ser substituído por /livros/buscar sem termo
-            // Ou você pode mantê-lo e chamar this.livroService.buscarTodos();
             return this.livroService.buscarTodos();
         });
     }
-    // NOVO ENDPOINT: Busca livros com filtro
     /**
      * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
-     * Inclui informação de disponibilidade.
-     * @param termo Termo de busca para título, autor, categoria ou ID do livro.
+     * @param termo
      */
     buscarLivrosComFiltro(termo) {
         return __awaiter(this, void 0, void 0, function* () {

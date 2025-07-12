@@ -53,7 +53,6 @@ class UsuarioService {
     constructor(repositoryFactory) {
         this.repositoryFactory = repositoryFactory;
         this.observers = [];
-        // Usa a factory para obter a instância do repositório
         this.usuarioRepositorio = this.repositoryFactory.criarUsuarioRepositorio();
         this.usuarioActivityService = new UsuarioActivityService_1.UsuarioActivityService(this.repositoryFactory);
         this.registrarObserver(new UsuarioActivityObserver_1.UsuarioActivityObserver(this.usuarioActivityService));
@@ -82,7 +81,6 @@ class UsuarioService {
             if (emailExistente) {
                 throw new Error('Este email já está em uso.');
             }
-            // NOVO: Validação do comprimento da senha ANTES de fazer o hash
             if (dadosCriacao.senha.length < 6) {
                 throw new Error('Senha deve ter pelo menos 6 caracteres.');
             }
@@ -122,7 +120,7 @@ class UsuarioService {
             if (!usuarioExistente) {
                 throw new Error('Usuário para atualizar não encontrado.');
             }
-            const oldUsuarioData = Object.assign({}, usuarioExistente); // Clonar para capturar o estado antes da atualização
+            const oldUsuarioData = Object.assign({}, usuarioExistente);
             usuarioExistente.nome = dto.nome;
             usuarioExistente.email = dto.email;
             if (dto.perfil !== undefined) {
@@ -149,7 +147,7 @@ class UsuarioService {
                 this.notificarObservers('login:falha', { email: dto.email, mensagem: 'Senha inválida' });
                 throw new Error('Email ou senha inválidos.');
             }
-            this.notificarObservers('login:sucesso', { email: usuario.email, perfil: usuario.perfil }, usuario.id); // Passe o ID do usuário logado
+            this.notificarObservers('login:sucesso', { email: usuario.email, perfil: usuario.perfil }, usuario.id);
             return usuario;
         });
     }

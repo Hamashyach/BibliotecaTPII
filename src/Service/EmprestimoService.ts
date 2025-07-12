@@ -55,7 +55,7 @@ export class EmprestimoService {
 
         if (emprestimo.dataDevolucao !== null) {
             statusTexto = 'Devolvido';
-        } else if (dataPrevistaSemHora <= hoje) { 
+        } else if (dataPrevistaSemHora < hoje) { 
             statusTexto = 'Atrasado'; 
         } else {
             statusTexto = 'Ativo'; 
@@ -98,7 +98,7 @@ export class EmprestimoService {
 
         const dataEmprestimo = new Date();
         const dataDevolucaoPrevista = new Date(dataEmprestimo);
-        dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + 7);
+        dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + );
 
         const novoEmprestimo = new Emprestimo(livroId, usuarioId);
         novoEmprestimo.dataEmprestimo = dataEmprestimo; 
@@ -163,13 +163,14 @@ export class EmprestimoService {
 
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0); 
+
         const emprestimosAtrasados = todosEmprestimos.filter(emprestimo => {
            
             if (emprestimo.dataDevolucao === null) {
     
                 const dataPrevista = new Date(emprestimo.dataDevolucaoPrevista);
                 dataPrevista.setHours(0, 0, 0, 0);
-                return dataPrevista <= hoje; 
+                return dataPrevista < hoje; 
             }
             return false; 
         });

@@ -405,7 +405,6 @@
 						}
 					}
 				},
-				"description": "Lista todos os usuários cadastrados.",
 				"tags": [
 					"Usuario"
 				],
@@ -446,14 +445,12 @@
 						}
 					}
 				},
-				"description": "Busca um usuário específico pelo seu ID.",
 				"tags": [
 					"Usuario"
 				],
 				"security": [],
 				"parameters": [
 					{
-						"description": "O identificador numérico do usuário. Ex: 123",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -489,7 +486,6 @@
 						}
 					}
 				},
-				"description": "Deleta um usuário específico pelo seu ID.",
 				"tags": [
 					"Usuario"
 				],
@@ -538,7 +534,6 @@
 						}
 					}
 				},
-				"description": "Atualiza os dados de um usuário existente.",
 				"tags": [
 					"Usuario"
 				],
@@ -657,14 +652,13 @@
 						}
 					}
 				},
-				"description": "Lista livros, com opção de filtro por termo (título, autor, categoria, ID).\r\nInclui informação de disponibilidade.",
+				"description": "Lista livros, com opção de filtro por termo (título, autor, categoria, ID).",
 				"tags": [
 					"Livro"
 				],
 				"security": [],
 				"parameters": [
 					{
-						"description": "Termo de busca para título, autor, categoria ou ID do livro.",
 						"in": "query",
 						"name": "termo",
 						"required": false,
@@ -875,7 +869,6 @@
 				"security": [],
 				"parameters": [
 					{
-						"description": "O ID do empréstimo a ser devolvido.",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -886,7 +879,6 @@
 					}
 				],
 				"requestBody": {
-					"description": "O corpo da requisição contendo o tipo de estratégia de multa.",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -896,8 +888,7 @@
 										"type": "string"
 									}
 								},
-								"type": "object",
-								"description": "O corpo da requisição contendo o tipo de estratégia de multa."
+								"type": "object"
 							}
 						}
 					}
@@ -1071,7 +1062,6 @@
 				"security": [],
 				"parameters": [
 					{
-						"description": "O nome (ou parte do nome) do usuário para buscar.",
 						"in": "query",
 						"name": "nome",
 						"required": true,

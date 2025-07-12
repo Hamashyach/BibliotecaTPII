@@ -15,6 +15,7 @@ export class EmprestimoRepository implements iEmprestimoRepository {
                 livroId INT NOT NULL,
                 usuarioId INT NOT NULL,
                 dataEmprestimo DATE NOT NULL,
+                dataDevolucaoPrevista DATE,
                 dataDevolucao DATE,
                 FOREIGN KEY (livroId) REFERENCES livros(id),
                 FOREIGN KEY (usuarioId) REFERENCES usuarios(id)
@@ -35,18 +36,21 @@ export class EmprestimoRepository implements iEmprestimoRepository {
 
             emprestimo.id = linha.id;
             emprestimo.dataEmprestimo = new Date(linha.dataEmprestimo);
+            emprestimo.dataDevolucaoPrevista = new Date(linha.dataDevolucaoPrevista);
             emprestimo.dataDevolucao = linha.dataDevolucao ? new Date(linha.dataDevolucao) : null;
+
 
         return emprestimo;
     }
 
     async inserirEmprestimo(emprestimo: Emprestimo): Promise<Emprestimo> {
-        const query = "INSERT INTO emprestimos (livroId, usuarioId, dataEmprestimo, dataDevolucao) VALUES (?, ?, ?, ?)";
+        const query = "INSERT INTO emprestimos (livroId, usuarioId, dataEmprestimo, dataDevolucaoprevista, dataDevolucao) VALUES (?, ?, ?, ?, ?)";
         try {
             const resultado = await executarComandoSQL(query, [
                 emprestimo.livroId,
                 emprestimo.usuarioId,
                 emprestimo.dataEmprestimo,
+                emprestimo.dataDevolucaoPrevista,
                 emprestimo.dataDevolucao
             ]);
             console.log('Empréstimo inserido com sucesso, ID:', resultado.insertId);
@@ -62,12 +66,13 @@ export class EmprestimoRepository implements iEmprestimoRepository {
         if (!emprestimo.id) {
             throw new Error("Não é possível atualizar um empréstimo sem ID.");
         }
-        const query = "UPDATE emprestimos SET livroId = ?, usuarioId = ?, dataEmprestimo = ?, dataDevolucao = ? WHERE id = ?";
+        const query = "UPDATE emprestimos SET livroId = ?, usuarioId = ?, dataEmprestimo = ?, dataDevolucaoprevista = ?, dataDevolucao = ? WHERE id = ?";
         try {
             await executarComandoSQL(query, [
                 emprestimo.livroId,
                 emprestimo.usuarioId,
                 emprestimo.dataEmprestimo,
+                emprestimo.dataDevolucaoPrevista,
                 emprestimo.dataDevolucao,
                 emprestimo.id
             ]);

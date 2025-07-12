@@ -137,5 +137,9 @@ export class EmprestimoController extends Controller {
         return this.emprestimoService.buscarPorNomeUsuario(nome);
     }
 
+    
+
+
+
    
 }

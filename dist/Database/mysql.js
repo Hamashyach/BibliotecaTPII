@@ -18,7 +18,6 @@ exports.mysqlConnection = mysql2_1.default.createConnection(dbConfig);
 exports.mysqlConnection.connect((err) => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados: ', err);
-        // throw err; // Remova o throw aqui para evitar crash na aplicação
         return;
     }
     console.log('Conexão bem-sucedida com o banco de dados MySQL');
@@ -28,7 +27,6 @@ function executarComandoSQL(query, valores) {
         exports.mysqlConnection.query(query, valores, (err, resultado) => {
             if (err) {
                 reject(err);
-                // throw err; // Remova o throw aqui também
                 return;
             }
             resolve(resultado);

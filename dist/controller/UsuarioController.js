@@ -71,21 +71,18 @@ let UsuarioController = class UsuarioController extends tsoa_1.Controller {
     login(dto, resError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // 2. O controller agora fala com o Proxy, não com o serviço diretamente.
                 const adminDto = yield this.loginProxy.realizarLogin(dto);
-                // 3. Se o login for bem-sucedido, gera um token JWT.
+                // Se o login for bem-sucedido, gera um token JWT.
                 const secret = process.env.JWT_SECRET || 'SEGREDO_PADRAO_PARA_DESENVOLVIMENTO';
-                const token = jwt.sign({ id: adminDto.id, email: adminDto.email, perfil: adminDto.perfil }, secret, { expiresIn: '8h' } // Token expira em 8 horas
-                );
+                const token = jwt.sign({ id: adminDto.id, email: adminDto.email, perfil: adminDto.perfil }, secret, { expiresIn: '8h' });
                 this.setStatus(200);
                 return { token: token, usuario: adminDto };
             }
             catch (error) {
-                // O catch agora lida com erros tanto do Serviço quanto do Proxy.
                 if (error.message.includes('Acesso negado')) {
-                    return resError(401, { mensagem: error.message }); // 401 Unauthorized
+                    return resError(401, { mensagem: error.message });
                 }
-                return resError(400, { mensagem: error.message }); // 400 Bad Request
+                return resError(400, { mensagem: error.message });
             }
         });
     }
@@ -93,29 +90,24 @@ let UsuarioController = class UsuarioController extends tsoa_1.Controller {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const usuarioCriado = yield this.usuarioService.criar(dadosCriacao);
-                this.setStatus(201); // Define o status HTTP para 201 Created
+                this.setStatus(201);
                 return usuarioCriado;
             }
             catch (error) {
                 if (error.message.includes('email já está em uso')) {
-                    // `resError` é uma função para enviar respostas de erro.
                     return resError(409, new BasicresponseDto_1.BasicResponseDto(error.message, undefined));
                 }
                 return resError(400, new BasicresponseDto_1.BasicResponseDto(error.message, undefined));
             }
         });
     }
-    /**
-     * Lista todos os usuários cadastrados.
-     */
     listarTodosUsuarios() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.usuarioService.buscarTodos();
         });
     }
     /**
-     * Busca um usuário específico pelo seu ID.
-     * @param id O identificador numérico do usuário. Ex: 123
+     * @param id
      */
     filtrarUsuarioPorId(id, resNaoEncontrado) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -126,35 +118,24 @@ let UsuarioController = class UsuarioController extends tsoa_1.Controller {
             return usuario;
         });
     }
-    /**
-     * Deleta um usuário específico pelo seu ID.
-     */
     deletarUsuario(id, resNaoEncontrado) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.usuarioService.deletar(id);
                 this.setStatus(204);
-                return; // Retorna void para a resposta 204
+                return;
             }
             catch (error) {
                 if (error.message.includes('não encontrado')) {
                     return resNaoEncontrado(404, { mensagem: error.message });
                 }
-                // Lança o erro para um middleware de erro genérico tratar
                 throw error;
             }
         });
     }
-    /**
-     * Atualiza os dados de um usuário existente.
-     */
     atualizarUsuario(id, dadosAtualizacao, resNaoEncontrado) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // No mundo real, o serviço `atualizar` receberia o id e os dados parciais.
-                // Por simplicidade, vamos assumir que o serviço `atualizar` foi adaptado.
-                // Ex: const usuarioAtualizado = await this.usuarioService.atualizar(id, dadosAtualizacao);
-                // Simulação para o exemplo funcionar com nosso service atual:
                 const dtoCompleto = Object.assign({ id: id }, dadosAtualizacao);
                 const usuarioAtualizado = yield this.usuarioService.atualizar(dtoCompleto);
                 return usuarioAtualizado;
@@ -207,8 +188,7 @@ __decorate([
 __decorate([
     (0, tsoa_1.Delete)("{id}") // Rota: DELETE /usuarios/123
     ,
-    (0, tsoa_1.SuccessResponse)("204", "No Content") // Sucesso em delete não retorna corpo
-    ,
+    (0, tsoa_1.SuccessResponse)("204", "No Content"),
     __param(0, (0, tsoa_1.Path)()),
     __param(1, (0, tsoa_1.Res)()),
     __metadata("design:type", Function),

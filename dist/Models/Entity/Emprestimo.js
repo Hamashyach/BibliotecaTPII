@@ -1,5 +1,4 @@
 "use strict";
-// src/Modelos/Entidades/Emprestimo.ts
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Emprestimo = void 0;
 class Emprestimo {
