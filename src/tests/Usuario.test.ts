@@ -1,16 +1,14 @@
-// src/Models/Entity/__tests__/Usuario.test.ts
-
 import { Usuario } from '../Models/Entity/Usuario';
 
 describe('Usuario', () => {
-  // Teste para criação de usuário com dados válidos
+ 
   it('deve criar uma instância de Usuario com dados válidos', () => {
     const usuario = new Usuario('Teste Nome', 'teste@email.com', 'senhaSegura123');
     expect(usuario).toBeInstanceOf(Usuario);
     expect(usuario.nome).toBe('Teste Nome');
     expect(usuario.email).toBe('teste@email.com');
     expect(usuario.senha).toBe('senhaSegura123');
-    expect(usuario.perfil).toBe('usuario'); // Perfil padrão
+    expect(usuario.perfil).toBe('usuario'); 
   });
 
   it('deve criar uma instância de Usuario com perfil admin', () => {
@@ -18,7 +16,6 @@ describe('Usuario', () => {
     expect(admin.perfil).toBe('admin');
   });
 
-  // Testes para validações no construtor
   describe('Validações do construtor', () => {
     it('deve lançar um erro se o nome for vazio', () => {
       expect(() => new Usuario('', 'email@example.com', 'senha123')).toThrow(

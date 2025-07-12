@@ -98,7 +98,7 @@ export class EmprestimoService {
 
         const dataEmprestimo = new Date();
         const dataDevolucaoPrevista = new Date(dataEmprestimo);
-        dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + );
+        dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + 7);
 
         const novoEmprestimo = new Emprestimo(livroId, usuarioId);
         novoEmprestimo.dataEmprestimo = dataEmprestimo; 
