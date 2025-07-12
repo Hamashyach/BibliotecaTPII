@@ -13,7 +13,6 @@ export class UsuarioActivityObserver implements Observer {
       
         let activityUsuarioId: number | undefined = usuarioId;
 
-        // Tenta inferir o usuarioId de diferentes tipos de dados
         if (!activityUsuarioId) {
             if (data instanceof Usuario && data.id) {
                 activityUsuarioId = data.id;
@@ -63,7 +62,7 @@ export class UsuarioActivityObserver implements Observer {
                     valorMulta: (data as DevolucaoDto).valorMulta
                 };
                 break;
-            case 'emprestimo:deletado': // Usado pelo comando desfazer
+            case 'emprestimo:deletado': 
                 tipoOperacao = 'EMPRESTIMO_DELETADO_POR_DESFAZER';
       
                 if (data && data.id) {

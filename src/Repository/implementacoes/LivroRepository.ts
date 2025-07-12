@@ -113,14 +113,12 @@ export class LivroRepository implements ILivroRepository {
         }
     }
 
-    // NOVO MÉTODO: Busca livros por termo (título, autor, categoria, ou ID)
     async buscarLivrosPorTermo(termo: string): Promise<Livro[]> {
         const termoLike = `%${termo}%`;
         let query = "SELECT * FROM livros WHERE titulo LIKE ? OR autor LIKE ? OR categoria LIKE ?";
         const params: (string | number)[] = [termoLike, termoLike, termoLike];
-
-        // Se o termo de busca puder ser um ID numérico, adicione a condição
-        if (!isNaN(Number(termo))) { // Verifica se o termo é um número
+        
+        if (!isNaN(Number(termo))) { 
             query += " OR id = ?";
             params.push(Number(termo));
         }

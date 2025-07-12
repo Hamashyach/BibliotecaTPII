@@ -1,8 +1,6 @@
-// src/Repositorios/EmprestimoRepositorio.ts
-
-import { executarComandoSQL } from '../../Database/mysql'; // Ajuste o caminho se necessário
-import { Emprestimo } from '../../Models/Entity/Emprestimo'; // Ajuste o caminho se necessário
-import { iEmprestimoRepository } from '../interfaces/iEmprestimoRepository'; // Ajuste o caminho se necessário
+import { executarComandoSQL } from '../../Database/mysql'; 
+import { Emprestimo } from '../../Models/Entity/Emprestimo'; 
+import { iEmprestimoRepository } from '../interfaces/iEmprestimoRepository'; 
 
 export class EmprestimoRepository implements iEmprestimoRepository {
 
@@ -11,8 +9,6 @@ export class EmprestimoRepository implements iEmprestimoRepository {
     }
 
     private async criarTabela(): Promise<void> {
-        // Note que os nomes das tabelas referenciadas (FOREIGN KEY)
-        // devem ser os mesmos que você usa no banco (ex: 'usuarios' e 'livros')
         const query = `
             CREATE TABLE IF NOT EXISTS emprestimos (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -124,7 +120,6 @@ export class EmprestimoRepository implements iEmprestimoRepository {
         const query = "SELECT COUNT(*) as total FROM emprestimos WHERE usuarioId = ?";
         try {
             const resultado = await executarComandoSQL(query, [usuarioId]);
-            // O resultado de COUNT é sempre uma linha, com o valor no alias 'total'.
             return resultado[0].total;
         } catch (err: any) {
             console.error(`Erro ao contar empréstimos para o usuário de ID ${usuarioId}:`, err);
@@ -133,7 +128,7 @@ export class EmprestimoRepository implements iEmprestimoRepository {
     }
 
     async buscarAtivoPorLivroId(livroId: number): Promise<Emprestimo | null> {
-        // Um empréstimo ativo é aquele que ainda não foi devolvido.
+
         const query = "SELECT * FROM emprestimos WHERE livroId = ? AND dataDevolucao IS NULL";
         try {
             const resultado = await executarComandoSQL(query, [livroId]);
@@ -147,10 +142,8 @@ export class EmprestimoRepository implements iEmprestimoRepository {
         }
     }
     
-    // Assumindo que você queira buscar pelo nome do usuário que fez o empréstimo
+    
     async filtrarEmprestimosPorNomeUsuario(nome: string): Promise<Emprestimo[]> {
-        // Esta query junta a tabela de empréstimos com a de usuários
-        // para conseguir filtrar pelo nome do usuário.
         const query = `
             SELECT e.* FROM emprestimos e
             JOIN usuarios u ON e.usuarioId = u.id

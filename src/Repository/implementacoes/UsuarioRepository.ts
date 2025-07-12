@@ -1,19 +1,13 @@
-// src/Repositories/UsuarioRepository.ts
-
 import { executarComandoSQL } from '../../Database/mysql'; 
 import { Usuario } from '../../Models/Entity/Usuario'; 
 import { IUsuarioRepository } from '../interfaces/IUsuarioRepository';
 
-
-// A classe agora implementa a interface que definimos
 export class UsuarioRepository implements IUsuarioRepository {
 
-    // O construtor chama o método para criar a tabela
     constructor() {
         this.criarTabela();
     }
 
-    // Método privado para garantir que a tabela 'usuarios' exista
     private async criarTabela(): Promise<void> {
         const query = `
             CREATE TABLE IF NOT EXISTS usuarios (
@@ -33,8 +27,6 @@ export class UsuarioRepository implements IUsuarioRepository {
         }
     }
 
-    // Mapeia uma linha do banco para um objeto Usuario
-    // É útil para não repetir código
     private rowToUsuario(row: any): Usuario {
         const usuario = new Usuario(row.nome, row.email, row.senha, row.perfil);
         usuario.id = row.id;
@@ -56,12 +48,12 @@ export class UsuarioRepository implements IUsuarioRepository {
             return usuario;
         } catch (err) {
             console.error('Erro ao inserir usuário:', err);
-            throw err; // Relança o erro original
+            throw err; 
         }
     }
 
     async atualizarUsuario(usuario: Usuario): Promise<Usuario> {
-        // Garantir que o usuário tenha um ID para a atualização
+  
         if (!usuario.id) {
             throw new Error("Não é possível atualizar um usuário sem ID.");
         }
@@ -132,7 +124,6 @@ export class UsuarioRepository implements IUsuarioRepository {
         try {
             const resultado = await executarComandoSQL(query, []);
             console.log('Todos os usuários foram listados com sucesso');
-            // Mapeia cada linha para um objeto Usuario
             return resultado.map(this.rowToUsuario);
         } catch (err: any) {
             console.error('Erro ao listar todos os usuários:', err);

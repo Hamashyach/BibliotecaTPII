@@ -1,4 +1,3 @@
-// src/Servicos/LoginServiceProxy.ts
 import { UsuarioService } from './UsuarioService';
 import { LoginRequestDto } from '../Models/dto/LoginRequestdto';
 import { Usuario } from '../Models/Entity/Usuario';

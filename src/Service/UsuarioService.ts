@@ -16,7 +16,6 @@ export class UsuarioService {
     private usuarioActivityService: UsuarioActivityService;
 
     constructor(private readonly repositoryFactory: RepositoryFactory) {
-        // Usa a factory para obter a instância do repositório
         this.usuarioRepositorio = this.repositoryFactory.criarUsuarioRepositorio();
         this.usuarioActivityService = new UsuarioActivityService(this.repositoryFactory);
         this.registrarObserver(new UsuarioActivityObserver(this.usuarioActivityService));
@@ -50,7 +49,6 @@ export class UsuarioService {
             throw new Error('Este email já está em uso.');
         }
 
-        // NOVO: Validação do comprimento da senha ANTES de fazer o hash
         if (dadosCriacao.senha.length < 6) {
             throw new Error('Senha deve ter pelo menos 6 caracteres.');
         }
@@ -100,7 +98,7 @@ export class UsuarioService {
             throw new Error('Usuário para atualizar não encontrado.');
         }
 
-        const oldUsuarioData = { ...usuarioExistente }; // Clonar para capturar o estado antes da atualização
+        const oldUsuarioData = { ...usuarioExistente }; 
 
         usuarioExistente.nome = dto.nome;
         usuarioExistente.email = dto.email;
@@ -136,7 +134,7 @@ export class UsuarioService {
         }
 
         
-        this.notificarObservers('login:sucesso', { email: usuario.email, perfil: usuario.perfil }, usuario.id); // Passe o ID do usuário logado
+        this.notificarObservers('login:sucesso', { email: usuario.email, perfil: usuario.perfil }, usuario.id); 
         return usuario;
     }
 }

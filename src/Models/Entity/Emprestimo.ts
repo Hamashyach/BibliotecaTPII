@@ -1,5 +1,3 @@
-// src/Modelos/Entidades/Emprestimo.ts
-
 export class Emprestimo {
     id?: number;
     livroId: number;
