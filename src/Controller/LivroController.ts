@@ -31,16 +31,12 @@ export class LivroController extends Controller {
 
     @Get()
     public async listarTodosLivros(): Promise<LivroDto[]> {
-        // Agora, este endpoint pode ser substituído por /livros/buscar sem termo
-        // Ou você pode mantê-lo e chamar this.livroService.buscarTodos();
         return this.livroService.buscarTodos();
     }
 
-    // NOVO ENDPOINT: Busca livros com filtro
     /**
      * Lista livros, com opção de filtro por termo (título, autor, categoria, ID).
-     * Inclui informação de disponibilidade.
-     * @param termo Termo de busca para título, autor, categoria ou ID do livro.
+     * @param termo 
      */
     @Get("/buscar") // Rota: GET /livros/buscar?termo=exemplo
     public async buscarLivrosComFiltro(
