@@ -9,14 +9,13 @@
       box-sizing: border-box;
     }
 
-    /* O body será o contêiner flex para a sidebar fixa e a área principal */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       color: #333;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      display: flex; /* Habilita flexbox para dispor sidebar e main-area lado a lado */
+      height: 100vh; 
+      display: flex; 
     }
 
     /* Sidebar lateral fixa à esquerda */
@@ -25,13 +24,13 @@
       background-color: #2c3e50;
       color: white;
       padding: 1rem 0;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      position: fixed; /* Fixa a sidebar na tela */
+      height: 100vh; 
+      position: fixed; 
       top: 0;
       left: 0;
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da sidebar for muito grande */
+      overflow-y: auto; 
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      z-index: 1000; /* Garante que a sidebar fique acima de outros conteúdos */
+      z-index: 1000; 
     }
 
     .sidebar h2 {
@@ -64,12 +63,12 @@
 
     /* Área principal ao lado da sidebar */
     .main-area {
-      margin-left: 250px; /* Cria o espaço para a sidebar fixa */
-      display: flex; /* Contêiner flexível para o header e main-content */
-      flex-direction: column; /* Coloca header e main-content um abaixo do outro */
-      width: calc(100% - 250px); /* Ocupa o restante da largura */
-      height: 100vh; /* Ocupa a altura total da viewport */
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da área principal for muito grande */
+      margin-left: 250px; 
+      display: flex; 
+      flex-direction: column; 
+      width: calc(100% - 250px); 
+      height: 100vh; 
+      overflow-y: auto; 
     }
 
     /* Header dentro da área principal */
@@ -79,24 +78,23 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      flex-shrink: 0; /* Impede que o header encolha */
+      flex-shrink: 0; 
     }
 
     /* Conteúdo principal dentro da área principal */
     .main-content {
-      flex: 1; /* Faz o conteúdo principal ocupar o espaço restante na coluna */
+      flex: 1; 
       padding: 2rem;
-      overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
+      overflow-y: auto; 
       background-color: #f9f9f9;
-      /* O gerenciarUsuario.html NÃO tem display:flex e justify-content:center aqui */
+   
     }
 
     .main-content h2 {
       color: #007bff;
       margin-top: 0;
     }
-    
-    /* Estilos específicos desta tela (copiados do gerenciar_usuarios.html) */
+
     .controls-section {
         display: flex;
         justify-content: space-between;
@@ -138,60 +136,59 @@
         background-color: #0056b3;
     }
 
-    /* Estilos para a lista de usuários, adaptados para lista de empréstimos */
-    .loans-list-section { /* Renomeado de .user-list-section */
+    .loans-list-section { 
         background-color: #fff;
         padding: 1.5rem;
         border-radius: 8px;
         box-shadow: 0 0 8px rgba(0,0,0,0.05);
-        margin-bottom: 2rem; /* Consistent with gerenciarUsuario.html */
+        margin-bottom: 2rem; 
     }
-    .loans-list-section h3 { /* Renomeado de .user-list-section h3 */
+    .loans-list-section h3 { 
         margin-top: 0;
         color: #333;
         border-bottom: 1px solid #eee;
         padding-bottom: 0.5rem;
         margin-bottom: 1rem;
     }
-    .loans-table { /* Renomeado de .user-table */
+    .loans-table { 
         width: 100%;
         border-collapse: collapse;
     }
-    .loans-table th, .loans-table td { /* Renomeado de .user-table th, td */
+    .loans-table th, .loans-table td { 
         border: 1px solid #ddd;
         padding: 0.7rem;
         text-align: left;
     }
-    .loans-table th { /* Renomeado de .user-table th */
+    .loans-table th { 
         background-color: #f2f2f2;
     }
-    .loans-table tbody tr:hover { /* Renomeado de .user-table tbody tr:hover */
+    .loans-table tbody tr:hover { 
         background-color: #e9ecef;
-        /* cursor: pointer; -- Opcional se as linhas forem clicáveis */
+      
     }
-    .no-results-message { /* Similar a .no-results */
+    .no-results-message { 
         text-align: center;
         color: #6c757d;
         padding: 1rem;
     }
 
-    /* Seções de detalhes, como 'Empréstimos de [Usuário]' */
-    .loan-details-section { /* Similar a .loan-details-section em gerenciarUsuario.html */
+    
+    .loan-details-section {
         background-color: #fff;
         padding: 1.5rem;
         border-radius: 8px;
         box-shadow: 0 0 8px rgba(0,0,0,0.05);
         margin-bottom: 2rem;
-        /* display: none; */ /* Pode ser útil para esconder inicialmente */
+        
     }
-    .loan-details-section h3 { /* Similar a .loan-details-section h3 em gerenciarUsuario.html */
+    .loan-details-section h3 { 
         margin-top: 0;
         color: #333;
         border-bottom: 1px solid #eee;
         padding-bottom: 0.5rem;
         margin-bottom: 1rem;
     }
-    .loan-details-table { /* Similar a .loan-details-table em gerenciarUsuario.html */
+    .loan-details-table { 
         width: 100%;
         border-collapse: collapse;
         margin-top: 1rem;
@@ -214,10 +211,10 @@
     }
     .status-ativo {
         color: green;
-        font-weight: bold; /* Opcional: deixar em negrito também */
+        font-weight: bold; 
     }
     .status-devolvido {
-        color: #6c757d; /* Cor mais neutra para devolvido */
+        color: #6c757d; 
     }
   </style>
 </head>

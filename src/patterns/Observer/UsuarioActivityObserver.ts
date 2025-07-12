@@ -65,7 +65,7 @@ export class UsuarioActivityObserver implements Observer {
                 break;
             case 'emprestimo:deletado': // Usado pelo comando desfazer
                 tipoOperacao = 'EMPRESTIMO_DELETADO_POR_DESFAZER';
-                // O CommandManager passa { id } no evento 'emprestimo:deletado'
+      
                 if (data && data.id) {
                     detalhesOperacao = { emprestimoId: data.id };
                 }

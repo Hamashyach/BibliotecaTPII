@@ -48,14 +48,13 @@ class EmprestimoService {
         let statusTexto;
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
-        // Zera a hora da data prevista para comparação
         const dataPrevistaSemHora = new Date(emprestimo.dataDevolucaoPrevista);
         dataPrevistaSemHora.setHours(0, 0, 0, 0);
         if (emprestimo.dataDevolucao !== null) {
             statusTexto = 'Devolvido';
         }
-        else if (dataPrevistaSemHora < hoje) {
-            statusTexto = 'Atrasado'; // Empréstimo ativo e data prevista já passou
+        else if (dataPrevistaSemHora <= hoje) { // AQUI ESTÁ A CORREÇÃO: MUDANÇA DE < PARA <=
+            statusTexto = 'Atrasado'; // Empréstimo ativo e data prevista já passou ou é hoje
         }
         else {
             statusTexto = 'Ativo'; // Empréstimo ativo e dentro do prazo
@@ -67,7 +66,8 @@ class EmprestimoService {
             dataEmprestimo: emprestimo.dataEmprestimo,
             dataDevolucao: emprestimo.dataDevolucao,
             dataDevolucaoPrevista: emprestimo.dataDevolucaoPrevista,
-            statusTexto: statusTexto // NOVO: Atribui o status calculado
+            statusTexto: statusTexto, // Atribui o status calculado
+            valorMulta: emprestimo.valorMulta
         };
     }
     /**

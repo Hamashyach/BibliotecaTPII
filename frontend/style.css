@@ -65,5 +65,5 @@ button:hover {
     color: #e74c3c;
     text-align: center;
     margin-top: 1rem;
-    min-height: 1.2em; /* Reserva espaço para a mensagem não "pular" o layout */
+    min-height: 1.2em; 
 }

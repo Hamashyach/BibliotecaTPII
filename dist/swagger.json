@@ -193,6 +193,11 @@
 					},
 					"statusTexto": {
 						"type": "string"
+					},
+					"valorMulta": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -202,7 +207,8 @@
 					"dataEmprestimo",
 					"dataDevolucao",
 					"dataDevolucaoPrevista",
-					"statusTexto"
+					"statusTexto",
+					"valorMulta"
 				],
 				"type": "object",
 				"additionalProperties": false

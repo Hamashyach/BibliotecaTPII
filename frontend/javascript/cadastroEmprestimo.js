@@ -1,5 +1,3 @@
-// frontend/js/cadastro_emprestimo.js
-
 document.addEventListener('DOMContentLoaded', async () => {
     const usuarioSelect = document.getElementById('usuarioSelect');
     const livroSelect = document.getElementById('livroSelect');
@@ -8,30 +6,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let allUsers = [];
     let allBooks = [];
-    let activeLoans = new Set(); // Para armazenar IDs de livros atualmente emprestados
+    let activeLoans = new Set(); 
 
     const fetchInitialData = async () => {
         try {
-            // Fetch users
+           
             const usersResponse = await fetch('http://localhost:3040/api/usuarios');
             allUsers = await usersResponse.json();
             populateSelect(usuarioSelect, allUsers, 'id', 'nome', 'Carregando usuários...');
 
-            // Fetch books
+           
             const booksResponse = await fetch('http://localhost:3040/api/livros');
             allBooks = await booksResponse.json();
 
-            // Fetch all loans to identify active books
+            
             const loansResponse = await fetch('http://localhost:3040/api/emprestimos');
             const loans = await loansResponse.json();
-            activeLoans.clear(); // Limpa set anterior
+            activeLoans.clear(); 
             loans.forEach(loan => {
-                if (loan.dataDevolucao === null) { // Se o empréstimo ainda está ativo
+                if (loan.dataDevolucao === null) { 
                     activeLoans.add(loan.livroId);
                 }
             });
             
-            // Filtra os livros disponíveis (não estão em empréstimos ativos)
+            
             const availableBooks = allBooks.filter(book => !activeLoans.has(book.id));
             populateSelect(livroSelect, availableBooks, 'id', 'titulo', 'Carregando livros...');
 
@@ -66,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     cadastroEmprestimoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        showMessage('', ''); // Limpa mensagens anteriores
+        showMessage('', ''); 
         messageElement.style.display = 'none';
 
         const usuarioId = usuarioSelect.value;
@@ -91,7 +89,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 showMessage('Empréstimo registrado com sucesso!', 'success');
                 cadastroEmprestimoForm.reset();
-                // Recarregar os dados para atualizar a lista de livros disponíveis
                 await fetchInitialData(); 
             } else {
                 showMessage(data.mensagem || data.message || 'Erro ao registrar empréstimo.', 'error');
@@ -102,6 +99,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Carrega os dados quando a página é carregada
     fetchInitialData();
 });

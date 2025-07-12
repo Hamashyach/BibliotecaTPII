@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastro de Usuários - Biblioteca</title> <style>
-    /* Reset básico para todos os elementos */
     * {
       box-sizing: border-box;
     }
@@ -15,8 +14,8 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       color: #333;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      display: flex; /* Habilita flexbox para dispor sidebar e main-area lado a lado */
+      height: 100vh; 
+      display: flex; 
     }
 
     /* Sidebar lateral fixa à esquerda */
@@ -25,13 +24,12 @@
       background-color: #2c3e50;
       color: white;
       padding: 1rem 0;
-      height: 100vh; /* Ocupa a altura total da viewport */
-      position: fixed; /* Fixa a sidebar na tela */
-      top: 0;
+      height: 100vh; 
+      position: fixed; 
       left: 0;
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da sidebar for muito grande */
+      overflow-y: auto; 
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      z-index: 1000; /* Garante que a sidebar fique acima de outros conteúdos */
+      z-index: 1000;
     }
 
     .sidebar h2 {
@@ -64,12 +62,12 @@
 
     /* Área principal ao lado da sidebar */
     .main-area {
-      margin-left: 250px; /* Cria o espaço para a sidebar fixa */
-      display: flex; /* Contêiner flexível para o header e main-content */
-      flex-direction: column; /* Coloca header e main-content um abaixo do outro */
-      width: calc(100% - 250px); /* Ocupa o restante da largura */
-      height: 100vh; /* Ocupa a altura total da viewport */
-      overflow-y: auto; /* Adiciona scroll se o conteúdo da área principal for muito grande */
+      margin-left: 250px; 
+      display: flex; 
+      flex-direction: column; 
+      width: calc(100% - 250px); 
+      height: 100vh; 
+      overflow-y: auto; 
     }
 
     /* Header dentro da área principal */
@@ -79,14 +77,14 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      flex-shrink: 0; /* Impede que o header encolha */
+      flex-shrink: 0; 
     }
 
     /* Conteúdo principal dentro da área principal */
     .main-content {
-      flex: 1; /* Faz o conteúdo principal ocupar o espaço restante na coluna */
+      flex: 1; 
       padding: 2rem;
-      overflow-y: auto; /* Permite scroll se o conteúdo for muito grande */
+      overflow-y: auto; 
       background-color: #f9f9f9;
       
       /* Estilos para centralizar o wrapper interno do formulário */
@@ -97,7 +95,7 @@
 
     /* Wrapper interno para centralizar o conteúdo do formulário */
     .content-wrapper {
-        max-width: 600px; /* Largura máxima para o formulário */
+        max-width: 600px; 
         width: 100%;
         box-sizing: border-box;
         background-color: #fff;
@@ -125,7 +123,7 @@
         box-sizing: border-box;
     }
     .form-group button {
-        background-color: #28a745; /* Verde para ação de sucesso */
+        background-color: #28a745; 
         color: white;
         padding: 1rem 1.5rem;
         border: none;
@@ -142,7 +140,7 @@
         padding: 0.8rem;
         border-radius: 4px;
         text-align: center;
-        display: none; /* Inicialmente oculto */
+        display: none; 
     }
     .message.success {
         background-color: #d4edda;

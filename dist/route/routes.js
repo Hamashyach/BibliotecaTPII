@@ -95,6 +95,7 @@ const models = {
             "dataDevolucao": { "dataType": "union", "subSchemas": [{ "dataType": "datetime" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "dataDevolucaoPrevista": { "dataType": "datetime", "required": true },
             "statusTexto": { "dataType": "string", "required": true },
+            "valorMulta": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "enum", "enums": [null] }], "required": true },
         },
         "additionalProperties": false,
     },

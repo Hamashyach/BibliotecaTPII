@@ -1,6 +1,3 @@
-// frontend/js/gerenciar_livros.js
-// CÓDIGO ATUALIZADO
-
 document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
@@ -8,25 +5,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const booksListContainer = document.getElementById('booksListContainer');
     const loadingBooksMessage = document.getElementById('loadingBooksMessage');
 
-    let allBooks = []; // Para armazenar os livros que vêm do backend (já com disponibilidade)
+    let allBooks = []; 
 
-    // Função para buscar e exibir livros (agora com termo de busca)
     const fetchAndDisplayBooks = async (searchTerm = '') => {
         try {
             loadingBooksMessage.textContent = 'Carregando livros...';
             
-            // MUDANÇA AQUI: Sempre inclui o parâmetro 'termo', mesmo que seja uma string vazia
             const url = `http://localhost:3040/api/livros/buscar?termo=${encodeURIComponent(searchTerm)}`;
             
             const response = await fetch(url);
 
-            // Verifica se a resposta é JSON antes de tentar fazer o parse
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {
-                allBooks = await response.json(); // Livros já vêm com 'isAvailable'
+                allBooks = await response.json(); 
                 displayBooks(allBooks); 
             } else {
-                // Se não for JSON, é provável que seja uma página de erro HTML
+              
                 const errorText = await response.text();
                 console.error('Erro: Resposta não é JSON. Conteúdo:', errorText);
                 booksListContainer.innerHTML = '<p class="no-results-message error">Erro ao carregar lista de livros. Resposta inválida do servidor.</p>';
@@ -39,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const displayBooks = (booksToDisplay) => {
-        booksListContainer.innerHTML = ''; // Limpa resultados anteriores
+        booksListContainer.innerHTML = ''; 
         loadingBooksMessage.style.display = 'none';
 
         if (booksToDisplay.length === 0) {
@@ -77,17 +71,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         booksListContainer.appendChild(table);
     };
 
-    // Event Listeners
+
     searchButton.addEventListener('click', () => {
         const searchTerm = searchInput.value;
-        fetchAndDisplayBooks(searchTerm); // Chama a busca no backend
+        fetchAndDisplayBooks(searchTerm); 
     });
 
     clearSearchButton.addEventListener('click', () => {
         searchInput.value = '';
-        fetchAndDisplayBooks(''); // Chama para exibir todos novamente, passando string vazia
+        fetchAndDisplayBooks(''); 
     });
 
-    // Inicia o carregamento de todos os dados quando a página é carregada
-    fetchAndDisplayBooks(''); // Primeira chamada com termo vazio para carregar todos
+    fetchAndDisplayBooks(''); s
 });

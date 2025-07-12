@@ -12,6 +12,7 @@ class Emprestimo {
         this.dataEmprestimo = new Date();
         this.dataDevolucao = null;
         this.dataDevolucaoPrevista = new Date();
+        this.valorMulta = null;
     }
 }
 exports.Emprestimo = Emprestimo;

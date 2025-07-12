@@ -1,6 +1,3 @@
-// frontend/js/gerenciar_emprestimos.js
-// CÓDIGO CORRIGIDO E ATUALIZADO PARA USAR statusTexto DO BACKEND
-
 document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
@@ -8,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loansListContainer = document.getElementById('loansListContainer');
     const loadingLoansMessage = document.getElementById('loadingLoansMessage');
 
-    let allLoans = []; // Para armazenar todos os empréstimos carregados
+    let allLoans = []; // Para armazenar todos os empréstimos 
     let allUsers = []; // Para buscar nomes de usuários
     let allBooks = []; // Para buscar títulos de livros
 
@@ -16,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             loadingLoansMessage.textContent = 'Carregando empréstimos...';
             
-            // Buscar todos os usuários e livros primeiro para mapeamento
             const usersResponse = await fetch('http://localhost:3040/api/usuarios');
             allUsers = await usersResponse.json();
             const userMap = new Map(allUsers.map(user => [user.id, user]));
@@ -36,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const displayLoans = (loansToDisplay, userMap, bookMap) => {
-        loansListContainer.innerHTML = ''; // Limpa resultados anteriores
+        loansListContainer.innerHTML = ''; 
         loadingLoansMessage.style.display = 'none';
 
         if (loansToDisplay.length === 0) {
@@ -72,14 +68,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const dataPrevistaDevolucao = new Date(loan.dataDevolucaoPrevista).toLocaleDateString('pt-BR');
             const dataDevolucaoReal = loan.dataDevolucao ? new Date(loan.dataDevolucao).toLocaleDateString('pt-BR') : 'Empréstimo Ativo';
 
-            // NOVO: Usar statusTexto do backend e aplicar classes CSS
             let statusHtml = '';
             let statusClass = '';
             if (loan.statusTexto === 'Atrasado') {
                 statusClass = 'status-atrasado';
             } else if (loan.statusTexto === 'Ativo') {
                 statusClass = 'status-ativo';
-            } else { // Devolvido
+            } else { 
                 statusClass = 'status-devolvido';
             }
             statusHtml = `<span class="${statusClass}">${loan.statusTexto}</span>`;
@@ -98,7 +93,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         loansListContainer.appendChild(table);
     };
 
-    // Event Listeners (permanecem os mesmos)
     searchButton.addEventListener('click', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const filteredLoans = allLoans.filter(loan => {

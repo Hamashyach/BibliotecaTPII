@@ -1,16 +1,14 @@
-// frontend/js/cadastro_usuarios.js
-
 document.getElementById('cadastro-usuario-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const messageElement = document.getElementById('message');
-    messageElement.style.display = 'none'; // Esconde a mensagem anterior
-    messageElement.className = 'message'; // Limpa classes de estilo anteriores
+    messageElement.style.display = 'none'; 
+    messageElement.className = 'message'; 
 
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
-    const perfil = 'usuario'; // Perfil fixo como 'usuario' para esta tela
+    const perfil = 'usuario'; 
 
     try {
         const response = await fetch('http://localhost:3040/api/usuarios', {
@@ -26,10 +24,10 @@ document.getElementById('cadastro-usuario-form').addEventListener('submit', asyn
         if (response.ok) {
             messageElement.textContent = 'Usuário cadastrado com sucesso!';
             messageElement.classList.add('success');
-            // Limpar formulário após sucesso, se desejar
+           
             document.getElementById('cadastro-usuario-form').reset();
         } else {
-            // Se houver um erro do backend (ex: email já em uso, validação de senha)
+            
             messageElement.textContent = data.mensagem || data.message || 'Erro ao cadastrar usuário.';
             messageElement.classList.add('error');
         }
@@ -38,6 +36,6 @@ document.getElementById('cadastro-usuario-form').addEventListener('submit', asyn
         messageElement.textContent = 'Não foi possível conectar ao servidor para cadastrar o usuário.';
         messageElement.classList.add('error');
     } finally {
-        messageElement.style.display = 'block'; // Mostra a mensagem
+        messageElement.style.display = 'block'; 
     }
 });

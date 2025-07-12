@@ -10,31 +10,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const selectedUserNameElement = document.getElementById('selectedUserName');
     const userLoansContainer = document.getElementById('userLoansContainer');
 
-    let allUsers = []; // Para armazenar TODOS os usuários carregados do backend
-    let normalUsers = []; // NOVO: Para armazenar apenas usuários normais (filtrados)
-    let allBooks = []; // Para armazenar todos os livros carregados
-    let allLoans = []; // Para armazenar todos os empréstimos carregados
+    let allUsers = []; 
+    let normalUsers = [];
+    let allBooks = []; 
+    let allLoans = []; 
 
     const fetchAllData = async () => {
         try {
             loadingUsersMessage.textContent = 'Carregando usuários...';
             
-            // Fetch all users
             const usersResponse = await fetch('http://localhost:3040/api/usuarios');
             allUsers = await usersResponse.json();
             
-            // FILTRAR AQUI: Apenas usuários com perfil 'usuario'
             normalUsers = allUsers.filter(user => user.perfil === 'usuario');
 
-            // Fetch all books for loan details
             const booksResponse = await fetch('http://localhost:3040/api/livros');
             allBooks = await booksResponse.json();
 
-            // Fetch all loans for loan details
             const loansResponse = await fetch('http://localhost:3040/api/emprestimos');
             allLoans = await loansResponse.json();
 
-            displayUsers(normalUsers); // Exibe apenas os usuários normais inicialmente
+            displayUsers(normalUsers); 
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
             userListContainer.innerHTML = '<p class="no-results error">Erro ao carregar lista de usuários.</p>';
@@ -42,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const displayUsers = (usersToDisplay) => {
-        userListContainer.innerHTML = ''; // Limpa resultados anteriores
+        userListContainer.innerHTML = ''; 
         loadingUsersMessage.style.display = 'none';
 
         if (usersToDisplay.length === 0) {
@@ -67,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         usersToDisplay.forEach(user => {
             const row = tbody.insertRow();
-            row.dataset.userId = user.id; // Armazena o ID do usuário na linha
+            row.dataset.userId = user.id; 
             row.innerHTML = `
                 <td>${user.id}</td>
                 <td>${user.nome}</td>
@@ -81,8 +77,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const displayUserLoans = (user) => {
         selectedUserNameElement.textContent = user.nome;
-        userLoansContainer.innerHTML = ''; // Limpa empréstimos anteriores
-        loanDetailsSection.style.display = 'block'; // Mostra a seção de detalhes de empréstimos
+        userLoansContainer.innerHTML = ''; 
+        loanDetailsSection.style.display = 'block'; 
 
         const userLoans = allLoans.filter(loan => loan.usuarioId === user.id);
 
@@ -144,10 +140,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         userLoansContainer.appendChild(table);
     };
 
-    // Event Listeners
     searchButton.addEventListener('click', () => {
         const searchTerm = searchInput.value.toLowerCase();
-        // Filtra AGORA apenas nos usuários normais para pesquisa
         const filteredUsers = normalUsers.filter(user => 
             user.nome.toLowerCase().includes(searchTerm) || 
             user.email.toLowerCase().includes(searchTerm)
@@ -157,10 +151,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     clearSearchButton.addEventListener('click', () => {
         searchInput.value = '';
-        displayUsers(normalUsers); // Mostra todos os usuários normais novamente
-        loanDetailsSection.style.display = 'none'; // Esconde a seção de detalhes de empréstimos
+        displayUsers(normalUsers); 
+        loanDetailsSection.style.display = 'none'; 
     });
 
-    // Inicia o carregamento de todos os dados quando a página é carregada
+  
     fetchAllData();
 });

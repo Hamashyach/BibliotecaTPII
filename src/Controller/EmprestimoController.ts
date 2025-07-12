@@ -35,27 +35,26 @@ export class EmprestimoController extends Controller {
             } else if (error.message.includes("já está emprestado") || error.message.includes("atingiu o limite")) {
                 resError(409, { mensagem: error.message });
             } else {
-                throw error; // Lança outros erros
+                throw error; 
             }
-            return undefined as any; // Para satisfazer o tipo de retorno
+            return undefined as any; 
         }
     }
 
     /**
      * Registra a devolução de um livro a partir do ID do empréstimo.
-     * @param id O ID do empréstimo a ser devolvido.
-     * @param body O corpo da requisição contendo o tipo de estratégia de multa.
+     * @param id 
+     * @param body 
      */
     @Put("{id}/devolver")
     @SuccessResponse("200", "OK")
     public async devolverEmprestimo(
         @Path() id: number,
-        @Body() body: { strategyType?: string }, // Recebe strategyType no body da requisição
+        @Body() body: { strategyType?: string }, 
         @Res() resError: TsoaResponse<404 | 409, { mensagem: string }>
     ): Promise<DevolucaoDto> {
         try {
             let estrategia: ICalculoMultaStrategy;
-            // Seleciona a estratégia baseada no input do frontend
             if (body.strategyType === 'sem_multa') {
                 estrategia = new SemMultaStrategy();
             } else {
@@ -72,9 +71,9 @@ export class EmprestimoController extends Controller {
             } else if (error.message.includes("já foi devolvido")) {
                 resError(409, { mensagem: error.message });
             } else {
-                throw error; // Lança outros erros
+                throw error; 
             }
-            return undefined as any; // Para satisfazer o tipo de retorno
+            return undefined as any; 
         }
     }
 
@@ -129,7 +128,7 @@ export class EmprestimoController extends Controller {
 
     /**
      * Busca empréstimos pelo nome do usuário.
-     * @param nome O nome (ou parte do nome) do usuário para buscar.
+     * @param nome 
      */
     @Get("buscar-por-usuario") // Rota: GET /emprestimos/buscar-por-usuario?nome=Joao
     public async listarEmprestimosPorNomeUsuario(

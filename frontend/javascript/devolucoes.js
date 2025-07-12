@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     devolucaoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        showMessage('', ''); // Limpa mensagens anteriores
+        showMessage('', '');
 
         const emprestimoId = parseInt(emprestimoIdInput.value);
-        const strategyType = multaStrategySelect.value; // NOVO: Pega a estratégia selecionada
+        const strategyType = multaStrategySelect.value; 
 
         if (isNaN(emprestimoId)) {
             showMessage('Por favor, insira um ID de empréstimo válido.', 'error');
@@ -64,35 +64,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            // Envia a requisição para o backend para devolver o empréstimo
-            // Rota: PUT /api/emprestimos/{id}/devolver
+            
             const response = await fetch(`http://localhost:3040/api/emprestimos/${emprestimoId}/devolver`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // NOVO: Inclui a estratégia no corpo da requisição
+               
                 body: JSON.stringify({ strategyType: strategyType }), 
             });
 
-            const data = await response.json(); // A resposta inclui DevolucaoDto
+            const data = await response.json(); 
 
             if (response.ok) {
                 showMessage('Devolução registrada com sucesso!', 'success');
-                devolucaoForm.reset(); // Limpa o formulário
-                displayReturnDetails(data); // Exibe os detalhes da devolução e multa
+                devolucaoForm.reset(); 
+                displayReturnDetails(data);
             } else {
-                // Se houver um erro do backend (ex: empréstimo não encontrado, já devolvido)
+             
                 showMessage(data.mensagem || data.message || 'Erro ao processar devolução. Tente novamente.', 'error');
             }
         } catch (error) {
             console.error('Erro na requisição de devolução:', error);
             showMessage('Não foi possível conectar ao servidor para processar a devolução.', 'error');
         } finally {
-            // A mensagem ou os detalhes de retorno serão exibidos.
+           
         }
     });
 
-    // Carrega dados de usuários e livros ao carregar a página
+
     fetchSupportingData();
 });
