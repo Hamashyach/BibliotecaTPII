@@ -4,7 +4,7 @@ exports.MultaAtrasoSimplesStrategy = void 0;
 class MultaAtrasoSimplesStrategy {
     constructor() {
         this.valorPorDia = 2.00;
-        this.diasDeTolerancia = 7;
+        this.diasDeTolerancia = 0;
     }
     calcular(emprestimo) {
         const dataEmprestimo = emprestimo.dataEmprestimo.getTime();

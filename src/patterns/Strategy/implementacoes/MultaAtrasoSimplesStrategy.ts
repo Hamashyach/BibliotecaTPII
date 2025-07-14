@@ -3,7 +3,7 @@ import { Emprestimo } from "../../../Models/Entity/Emprestimo";
 
 export class MultaAtrasoSimplesStrategy implements ICalculoMultaStrategy {
     private valorPorDia: number = 2.00; 
-    private diasDeTolerancia: number = 7; 
+    private diasDeTolerancia: number = 0; 
 
     calcular(emprestimo: Emprestimo): number {
         const dataEmprestimo = emprestimo.dataEmprestimo.getTime();

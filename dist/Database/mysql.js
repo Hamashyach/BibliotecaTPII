@@ -11,7 +11,7 @@ const dbConfig = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'root',
+    password: 'ifsp',
     database: 'biblioteca'
 };
 exports.mysqlConnection = mysql2_1.default.createConnection(dbConfig);
