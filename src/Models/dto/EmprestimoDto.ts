@@ -1,6 +1,3 @@
-// src/Models/dto/EmprestimoDto.ts
-// ARQUIVO CORRIGIDO E ATUALIZADO
-
 export class EmprestimoDto {
     id: number;
     livroId: number;
